@@ -21,9 +21,13 @@ final Map<String, String> ruRU = {
   'bonds': 'Облигации',
   'currencies': 'Валюта',
   'starred': 'Избранное',
+  'all': 'Все',
   'popular instruments': 'Популярные инструменты',
   'russian stock market': 'Российский рынок акций',
   'banking sector': 'Банковский сектор',
   'energy sector': 'Энергетический сектор',
   'it sector': 'АйТи сектор',
+  'finance': 'Финансы',
+  'energy': 'Энергетика',
+  'nothing_found': 'Ничего не найдено.\nПопробуйте написать по-другому.'
 };

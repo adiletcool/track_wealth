@@ -64,14 +64,6 @@ class AuthController extends GetxController {
   void loginViaSocial(AuthMethod method) {}
 }
 
-extension EmailValidator on String {
-  bool isValidEmail() {
-    return RegExp(
-            r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
-        .hasMatch(this);
-  }
-}
-
 class EmailAuthController {
   Rx<TextEditingController> emailController = TextEditingController().obs;
   Rx<TextEditingController> passwordController = TextEditingController().obs;
@@ -91,7 +83,7 @@ class EmailAuthController {
 
   void validateEmailAndPassword() {
     // updates with when user changes textfield
-    if (emailController.value.text.isValidEmail() && passwordController.value.text.length >= 6) {
+    if (emailController.value.text.isEmail && passwordController.value.text.length >= 6) {
       canAuthViaEmail.value = true;
       return;
     }
@@ -102,9 +94,9 @@ class EmailAuthController {
     if (!canAuthViaEmail.value) return;
     // TODO
     if (isLogin) {
-      Get.showSnackbar(const GetSnackBar(message: 'LOGIN VIA EMAIL'));
+      Get.showSnackbar(GetSnackBar(message: 'LOGIN VIA EMAIL', duration: 3.seconds));
     } else {
-      Get.showSnackbar(const GetSnackBar(message: 'REGISTER VIA EMAIL'));
+      Get.showSnackbar(GetSnackBar(message: 'REGISTER VIA EMAIL', duration: 3.seconds));
     }
     Get.offNamed('/market');
   }
@@ -160,7 +152,7 @@ class PhoneAuthController {
     // Start timer
     isPhoneCodeSent.value = true;
     phoneCodeFocusNode.value.requestFocus();
-    Get.showSnackbar(const GetSnackBar(message: 'SENT PHONE CODE')); // TODO
+    Get.showSnackbar(GetSnackBar(message: 'SENT PHONE CODE', duration: 3.seconds)); // TODO
   }
 
   void authenticate() {
@@ -177,7 +169,7 @@ class PhoneAuthController {
     }
 
     // AUTH TODO
-    Get.showSnackbar(const GetSnackBar(message: 'AUTH VIA PHONE NUMBER'));
+    Get.showSnackbar(GetSnackBar(message: 'AUTH VIA PHONE NUMBER', duration: 3.seconds));
     Get.offNamed('/market');
   }
 }

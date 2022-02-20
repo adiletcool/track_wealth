@@ -20,14 +20,14 @@ class CurrencyTradeOperationData extends TradeOperationData {
     required this.price,
     required this.fee,
   }) : super(
-          marketType: MarketType.currencies,
+          assetType: AssetType.currencies,
           note: note,
         );
 
   @override
   Map<String, dynamic> toMap() {
     return {
-      'marketType': marketType.name,
+      'assetType': assetType.name,
       'buyCurrency': buyCurrency,
       'sellCurrency': sellCurrency,
       'amount': amount,

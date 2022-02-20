@@ -6,25 +6,23 @@ import 'operation_data/currency_data.dart';
 import 'operation_data/stock_data.dart';
 
 abstract class TradeOperationData extends OperationData {
-  final MarketType marketType;
+  final AssetType assetType;
 
   TradeOperationData({
     required String note,
-    required this.marketType,
+    required this.assetType,
   }) : super(note: note);
 
   factory TradeOperationData.fromMap(Map<String, dynamic> map) {
-    switch (MarketType.values.byName(map['marketType'])) {
-      case MarketType.stocks:
+    switch (AssetType.values.byName(map['assetType'])) {
+      case AssetType.stocks:
         return StockTradeOperationData.fromMap(map);
-      case MarketType.currencies:
+      case AssetType.currencies:
         return CurrencyTradeOperationData.fromMap(map);
-      case MarketType.crypto:
+      case AssetType.crypto:
         return CryptoTradeOperationData.fromMap(map);
-      case MarketType.bonds:
+      case AssetType.bonds:
         return BondTradeOperationData.fromMap(map);
-      case MarketType.starred:
-        throw 'Cannot add operation with `Starred` market type';
     }
   }
 }

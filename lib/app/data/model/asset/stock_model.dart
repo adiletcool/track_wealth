@@ -1,13 +1,15 @@
+import '../../enums/market_types.dart';
 import 'asset_model.dart';
 
-class StockModel implements AssetModel {
-  final String isin;
-  final String boardId;
+class SearchStockModel implements AssetModel {
+  final String? isin;
+  final String primaryBoardId;
   final String secId;
   final String shortName;
-  final String longName;
-  final int lotSize;
-  final int priceDecimals;
+  final String name;
+
+  @override
+  String? get imageUrl => isin == null ? null : 'https://invest-brands.cdn-tinkoff.ru/${isin}x160.png';
 
   @override
   String get subtitle => secId;
@@ -15,70 +17,68 @@ class StockModel implements AssetModel {
   @override
   String get displayName => shortName;
 
-  StockModel({
+  @override
+  AssetType get assetType => AssetType.stocks;
+
+  SearchStockModel({
     required this.isin,
-    required this.boardId,
+    required this.primaryBoardId,
     required this.secId,
     required this.shortName,
-    required this.longName,
-    required this.lotSize,
-    required this.priceDecimals,
+    required this.name,
   });
 
   Map<String, dynamic> toMap() => {
         "isin": isin,
-        "boardId": boardId,
-        "secId": secId,
-        "shortName": shortName,
-        "longName": longName,
-        "lotSize": lotSize,
-        "priceDecimals": priceDecimals,
+        "primary_boardid": primaryBoardId,
+        "secid": secId,
+        "shortname": shortName,
+        "name": name,
       };
 
-  StockModel.fromMap(Map<String, dynamic> map)
+  SearchStockModel.fromMap(Map<String, dynamic> map)
       : isin = map['isin'],
-        boardId = map['boardId'],
-        secId = map['secId'],
-        shortName = map['shortName'],
-        longName = map['longName'],
-        lotSize = map['lotSize'],
-        priceDecimals = map['priceDecimals'];
+        primaryBoardId = map['primary_boardid'],
+        secId = map['secid'],
+        shortName = map['shortname'],
+        name = map['name'];
+
+  static fromListOfMaps(List<Map<String, dynamic>> listOfMaps) {
+    return listOfMaps.map((Map<String, dynamic> m) {
+      return SearchStockModel.fromMap(m);
+    }).toList();
+  }
 }
 
-class SearchStockModel extends StockModel implements SearchAssetModel {
-  @override
+class StockModelWithMarketData extends SearchStockModel {
   final num lastPrice;
-  @override
-  final num todayChangePercent; // LASTTOPREVPRICE
-  @override
-  final num todayChangeNominal; // CHANGE
+  final num todayChangePercent;
+  final num todayChangeNominal;
+  final int priceDecimals;
 
-  final String updateTime; // UPDATETIME
-  final num? marketCapitalization; // ISSUECAPITALIZATION
+  final int lotSize;
 
-  @override
-  String get imageUrl => 'https://invest-brands.cdn-tinkoff.ru/${isin}x160.png';
+  final String updateTime;
+  final num? marketCapitalization;
 
-  SearchStockModel({
+  StockModelWithMarketData({
     required this.lastPrice,
     required this.todayChangePercent,
     required this.todayChangeNominal,
+    required this.priceDecimals,
+    required this.lotSize,
     required this.updateTime,
     this.marketCapitalization,
     required String isin,
-    required String boardId,
+    required String primaryBoardId,
     required String secId,
     required String shortName,
-    required String longName,
-    required int lotSize,
-    required int priceDecimals,
+    required String name,
   }) : super(
           isin: isin,
-          boardId: boardId,
+          primaryBoardId: primaryBoardId,
           secId: secId,
           shortName: shortName,
-          longName: longName,
-          lotSize: lotSize,
-          priceDecimals: priceDecimals,
+          name: name,
         );
 }

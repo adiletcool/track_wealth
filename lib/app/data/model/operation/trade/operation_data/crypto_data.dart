@@ -6,8 +6,8 @@ import '../../trade/trade_operation_data.dart';
 
 class CryptoTradeOperationData extends TradeOperationData {
   // model
-  final CryptoModel base;
-  final CryptoModel quote;
+  final SearchCryptoModel base;
+  final SearchCryptoModel quote;
 
   // operation details
   final num amount;
@@ -22,14 +22,14 @@ class CryptoTradeOperationData extends TradeOperationData {
     required this.price,
     required this.fee,
   }) : super(
-          marketType: MarketType.crypto,
+          assetType: AssetType.crypto,
           note: note,
         );
 
   @override
   Map<String, dynamic> toMap() {
     return {
-      'marketType': marketType.name,
+      'assetType': assetType.name,
       'base': base.toMap(),
       'quote': quote.toMap(),
       'amount': amount,
@@ -41,8 +41,8 @@ class CryptoTradeOperationData extends TradeOperationData {
 
   factory CryptoTradeOperationData.fromMap(Map<String, dynamic> map) {
     return CryptoTradeOperationData(
-      base: CryptoModel.fromMap(map['base']),
-      quote: CryptoModel.fromMap(map['quote']),
+      base: SearchCryptoModel.fromMap(map['base']),
+      quote: SearchCryptoModel.fromMap(map['quote']),
       amount: map['amount'],
       price: map['price'],
       fee: map['fee'],

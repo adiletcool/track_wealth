@@ -16,7 +16,7 @@ class AuthPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool keyboardVisible = MediaQuery.of(context).viewInsets.bottom != 0;
+    final bool keyboardVisible = context.mediaQueryViewInsets.bottom != 0;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,

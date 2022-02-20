@@ -1,30 +1,15 @@
+import '../../enums/market_types.dart';
+
 abstract class AssetModel {
   final String displayName;
   final String subtitle;
+  String? get imageUrl;
+
+  final AssetType assetType;
 
   AssetModel({
     required this.displayName,
     required this.subtitle,
+    required this.assetType,
   });
-}
-
-abstract class SearchAssetModel extends AssetModel {
-  final num lastPrice;
-  final int priceDecimals;
-  final num todayChangePercent;
-  final num todayChangeNominal;
-  final String imageUrl;
-
-  SearchAssetModel({
-    required this.lastPrice,
-    required this.priceDecimals,
-    required this.todayChangePercent,
-    required this.todayChangeNominal,
-    required this.imageUrl,
-    required String displayName,
-    required String subtitle,
-  }) : super(
-          displayName: displayName,
-          subtitle: subtitle,
-        );
 }

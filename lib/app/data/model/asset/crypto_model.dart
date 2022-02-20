@@ -1,12 +1,19 @@
+import '../../enums/market_types.dart';
 import 'asset_model.dart';
 
-class CryptoModel implements AssetModel {
+class SearchCryptoModel implements AssetModel {
   final String ticker;
   final String cmcId;
   final String cmcSlug;
   final String shortName;
 
-  CryptoModel({
+  @override
+  String? get imageUrl => null;
+
+  @override
+  AssetType get assetType => AssetType.crypto;
+
+  SearchCryptoModel({
     required this.ticker,
     required this.cmcId,
     required this.cmcSlug,
@@ -26,7 +33,7 @@ class CryptoModel implements AssetModel {
         "shortName": shortName,
       };
 
-  CryptoModel.fromMap(Map<String, dynamic> map)
+  SearchCryptoModel.fromMap(Map<String, dynamic> map)
       : ticker = map['ticker'],
         cmcId = map['cmcId'],
         cmcSlug = map['cmcSlug'],

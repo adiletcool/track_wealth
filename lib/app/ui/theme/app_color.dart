@@ -1,4 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+class ThemeBasedColor extends Color {
+  ThemeBasedColor(
+    BuildContext context,
+    Color lightThemeColor,
+    Color darkThemeColor,
+  ) : super(context.isDarkMode ? darkThemeColor.value : lightThemeColor.value);
+}
 
 const Color exampleColor = Colors.white;
 
@@ -9,6 +18,8 @@ const Color twitterBackgroundColor = Color(0xff00AEED);
 const Color emailBackgroundColor = Color(0xff2D9248);
 const Color phoneBackgroundColor = Color(0xff9e579d);
 
+const Color greyColor = Color(0xffE2E2E2);
+const Color greyColor2 = Color(0xff424242);
 const Color darkGreyColor = Color(0xff8a8a8a);
 const Color lightGreyColor = Color(0xffF5F5F5);
 const Color blueColor = Color(0xFF2A5BDD);

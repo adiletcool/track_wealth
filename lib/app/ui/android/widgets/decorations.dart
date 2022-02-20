@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:track_wealth/app/ui/theme/app_color.dart';
+
+import '../../theme/app_color.dart';
 
 InputDecoration myInputDecoration = InputDecoration(
   border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),

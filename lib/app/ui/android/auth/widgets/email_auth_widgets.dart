@@ -103,7 +103,7 @@ class EmailAuthInputFields extends GetView<AuthController> {
 
   @override
   Widget build(BuildContext context) {
-    final Color borderColor = (context.isDarkMode ? lightGreyColor : Colors.black).withOpacity(.3);
+    final Color borderColor = ThemeBasedColor(context, Colors.black, lightGreyColor).withOpacity(.3);
 
     return Container(
       height: 150,
@@ -132,7 +132,6 @@ class EmailAuthInputFields extends GetView<AuthController> {
   }
 }
 
-// TODO: remove splash
 class EmailAuthButton extends GetView<AuthController> {
   const EmailAuthButton({Key? key}) : super(key: key);
   // TODO: Text switches into progress indicator when pressed login / register. If success -> changeRoute, otherwise -> textfield error decorariton

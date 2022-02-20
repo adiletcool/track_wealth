@@ -7,7 +7,7 @@ import '../../trade/trade_operation_data.dart';
 
 class StockTradeOperationData extends TradeOperationData {
   // model
-  final StockModel stock;
+  final SearchStockModel stock;
 
   // operation details
   final CommonCurrency currency;
@@ -23,14 +23,14 @@ class StockTradeOperationData extends TradeOperationData {
     required this.price,
     required this.fee,
   }) : super(
-          marketType: MarketType.stocks,
+          assetType: AssetType.stocks,
           note: note,
         );
 
   @override
   Map<String, dynamic> toMap() {
     return {
-      'marketType': marketType.name,
+      'assetType': assetType.name,
       'stock': stock.toMap(),
       'currency': currency,
       'amount': amount,
@@ -42,7 +42,7 @@ class StockTradeOperationData extends TradeOperationData {
 
   factory StockTradeOperationData.fromMap(Map<String, dynamic> map) {
     return StockTradeOperationData(
-      stock: StockModel.fromMap(map['stock']),
+      stock: SearchStockModel.fromMap(map['stock']),
       currency: CommonCurrency.values.byName(map['currency']),
       amount: map['amount'],
       price: map['price'],

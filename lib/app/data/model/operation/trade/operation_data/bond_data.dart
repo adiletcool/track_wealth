@@ -59,12 +59,12 @@ class BondTradeOperationData extends TradeOperationData {
     required this.lotValue,
     required this.amount,
     required this.price,
-  }) : super(marketType: MarketType.bonds, note: note);
+  }) : super(assetType: AssetType.bonds, note: note);
 
   @override
   Map<String, dynamic> toMap() {
     return {
-      'marketType': marketType.name,
+      'assetType': assetType.name,
       'secId': secId,
       'boardId': boardId,
       'shortName': shortName,

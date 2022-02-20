@@ -1,5 +1,12 @@
 enum MarketType {
-  starred,
+  all,
+  stocks,
+  crypto,
+  bonds,
+  currencies,
+}
+
+enum AssetType {
   stocks,
   crypto,
   bonds,

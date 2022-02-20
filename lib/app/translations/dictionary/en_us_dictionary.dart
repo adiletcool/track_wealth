@@ -21,9 +21,13 @@ final Map<String, String> enUS = {
   'bonds': 'Bonds',
   'currencies': 'Currencies',
   'starred': 'Starred',
+  'all': 'All',
   'popular instruments': 'Popular instruments',
   'russian stock market': 'Russian stock market',
   'banking sector': 'Banking sector',
   'energy sector': 'Energy sector',
   'it sector': 'IT sector',
+  'finance': 'Finance',
+  'energy': 'Energy',
+  'nothing_found': 'Nothing found.\nTry another query.'
 };
