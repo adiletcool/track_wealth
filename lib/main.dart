@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:device_preview/device_preview.dart';
 
 import 'app/routes/app_pages.dart';
 import 'app/translations/add_translations.dart';
@@ -9,10 +11,17 @@ import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+
+  runApp(
+    DevicePreview(
+      enabled: !kReleaseMode,
+      builder: (context) => const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -20,16 +29,22 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      initialRoute: Routes.initial,
-      themeMode: ThemeMode.system,
+      // Theming
       theme: lightThemeData,
+      themeMode: ThemeMode.system,
       darkTheme: darkThemeData,
-      defaultTransition: Transition.fade,
+      // Routing
       getPages: AppPages.pages,
+      initialRoute: Routes.initial,
+      defaultTransition: Transition.fade,
+      // Localization
       locale: Get.deviceLocale,
       fallbackLocale: const Locale('en', 'US'), // specify the fallback locale in case an invalid locale is selected.
       translationsKeys: AppTranslation.translations,
+      // Debugging
+      useInheritedMediaQuery: true,
+      debugShowCheckedModeBanner: false,
+      builder: DevicePreview.appBuilder,
     );
   }
 }
