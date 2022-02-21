@@ -34,11 +34,11 @@ class EmailAuthBody extends GetView<AuthController> {
         AnimatedPadding(
           padding: EdgeInsets.only(bottom: context.mediaQueryViewInsets.bottom + 20),
           duration: 300.milliseconds,
-          child: ExpandedSection(
-            axisAlignment: -1.0,
-            expand: keyboardVisible || controller.email.canAuthViaEmail.value,
-            child: const Center(child: EmailAuthButton()),
-          ),
+          child: Obx(() => ExpandedSection(
+                axisAlignment: -1.0,
+                expand: keyboardVisible || controller.email.canAuthViaEmail.value,
+                child: const EmailAuthButton(),
+              )),
         ),
       ],
     );
@@ -134,30 +134,31 @@ class EmailAuthInputFields extends GetView<AuthController> {
 
 class EmailAuthButton extends GetView<AuthController> {
   const EmailAuthButton({Key? key}) : super(key: key);
-  // TODO: Text switches into progress indicator when pressed login / register. If success -> changeRoute, otherwise -> textfield error decorariton
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => InkWell(
-          splashColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-          child: AnimatedContainer(
-            duration: 300.milliseconds,
-            height: 50,
-            width: context.width - 80,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30),
-              color: controller.email.canAuthViaEmail.value ? blueColor : inactiveButtonColor,
-            ),
-            child: Center(
-              child: Text(
-                controller.isLogin.value ? 'to_login'.tr : 'to_register'.tr,
-                style: TextStyle(fontSize: 22, color: controller.email.canAuthViaEmail.value ? Colors.white : Colors.grey),
+    return Center(
+      child: Obx(() => InkWell(
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+            child: AnimatedContainer(
+              duration: 300.milliseconds,
+              height: 50,
+              width: context.width - 80,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30),
+                color: controller.email.canAuthViaEmail.value ? blueColor : inactiveButtonColor,
+              ),
+              child: Center(
+                child: Text(
+                  controller.isLogin.value ? 'to_login'.tr : 'to_register'.tr,
+                  style: TextStyle(fontSize: 22, color: controller.email.canAuthViaEmail.value ? Colors.white : Colors.grey),
+                ),
               ),
             ),
-          ),
-          onTap: () => controller.authViaEmail(),
-        ));
+            onTap: controller.authViaEmail,
+          )),
+    );
   }
 }
 

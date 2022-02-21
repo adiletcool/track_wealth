@@ -7,7 +7,7 @@ import '../../data/model/asset/stock_model.dart';
 import '../../data/repository/moex_repository.dart';
 
 class AssetSearchController extends GetxController {
-  final MoexRepository moexRepository;
+  final AssetRepository moexRepository;
 
   AssetSearchController(this.moexRepository);
 

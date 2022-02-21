@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:device_preview/device_preview.dart';
+import 'package:track_wealth/app/controllers/auth/auth_controller.dart';
 
 import 'app/routes/app_pages.dart';
 import 'app/translations/add_translations.dart';
@@ -12,9 +13,7 @@ import 'firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform).then((value) => Get.put(AuthController()));
 
   runApp(
     DevicePreview(
@@ -34,8 +33,8 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.system,
       darkTheme: darkThemeData,
       // Routing
+      home: const Center(child: CircularProgressIndicator()),
       getPages: AppPages.pages,
-      initialRoute: Routes.initial,
       defaultTransition: Transition.fade,
       // Localization
       locale: Get.deviceLocale,

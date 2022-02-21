@@ -6,6 +6,7 @@ final Map<String, String> ruRU = {
   'register': 'Регистрация',
   'to_register': 'Зарегистрироваться',
   'to_login': 'Войти',
+  'sign_out': 'Выйти',
   'forgot_password': 'Я не помню пароль',
   'email': 'Почта',
   'password': 'Пароль',
@@ -13,8 +14,17 @@ final Map<String, String> ruRU = {
   'confirm': 'Подтвердить',
   'send_again': 'Отправить снова',
   'change_phone_number': 'Изменить номер',
+  // auth exceptions
+  'auth_error': 'Ошибка авторизации',
+  'user-not-found': 'Пользователь с такой почтой не найден.',
+  'phone-number-already-exists': 'Указанный номер телефона уже используется существующим пользователем.',
+  'email-already-exists': 'Указанный адрес электронной почты уже используется существующим пользователем.',
+  'invalid-phone-number': 'Номер телефона недействителен.',
+  'invalid-email': 'Электронная почта недействительна.',
+  'invalid-password': 'Неверный логин или пароль.',
+  'wrong-password': 'Неверный логин или пароль.',
 
-  // Market page
+  // Asset search page
   'search': 'Поиск',
   'stocks': 'Акции',
   'crypto': 'Крипто',
@@ -29,5 +39,8 @@ final Map<String, String> ruRU = {
   'it sector': 'АйТи сектор',
   'finance': 'Финансы',
   'energy': 'Энергетика',
-  'nothing_found': 'Ничего не найдено.\nПопробуйте написать по-другому.'
+  'nothing_found': 'Ничего не найдено.\nПопробуйте написать по-другому.',
+
+  // Profile page
+  'profile': 'Профиль',
 };

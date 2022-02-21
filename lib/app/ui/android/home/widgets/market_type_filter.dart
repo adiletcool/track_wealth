@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../../controllers/home/market_search_controller.dart';
+import '../../../../controllers/home/asset_search_controller.dart';
 import '../../../../data/enums/market_types.dart';
 import '../../../theme/app_color.dart';
 

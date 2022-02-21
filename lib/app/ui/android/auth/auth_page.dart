@@ -8,11 +8,10 @@ import 'widgets/auth_method_card.dart';
 import 'widgets/email_auth_widgets.dart';
 import 'widgets/phone_auth_widgets.dart';
 
-class AuthPage extends StatelessWidget {
+class AuthPage extends GetView<AuthController> {
   AuthPage({Key? key}) : super(key: key);
 
   final ScrollController scrollController = ScrollController();
-  final AuthController authController = Get.put(AuthController());
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +35,7 @@ class AuthPage extends StatelessWidget {
                             spacing: 5,
                             runSpacing: 5,
                             alignment: WrapAlignment.center,
-                            children: authController
+                            children: controller
                                 .getAuthConfigs()
                                 .map((c) => AuthMethodCard(
                                       method: c.method,
@@ -55,12 +54,9 @@ class AuthPage extends StatelessWidget {
             SliverFillRemaining(
               hasScrollBody: false,
               child: Obx(() => AnimatedSwitcherWithTransition(
-                    showFirst: authController.isEmailChosen.value,
+                    showFirst: controller.isEmailChosen.value,
                     firstChildKey: 'first',
-                    firstChild: EmailAuthBody(
-                      keyboardVisible: keyboardVisible,
-                      key: const Key('first'),
-                    ),
+                    firstChild: EmailAuthBody(keyboardVisible: keyboardVisible, key: const Key('first')),
                     secondChild: PhoneAuthBody(keyboardVisible: keyboardVisible),
                   )),
             ),

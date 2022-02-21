@@ -1,9 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:get/get.dart';
 
+import '../../constants/firebase_constants.dart';
 import '../../data/enums/auth.dart';
+import '../../routes/app_pages.dart';
 import '../../ui/theme/app_color.dart';
 
 class AuthMethodConfig {
@@ -15,6 +18,26 @@ class AuthMethodConfig {
 }
 
 class AuthController extends GetxController {
+  late Rx<User?> _user;
+
+  @override
+  void onReady() {
+    _user = auth.currentUser.obs;
+    _user.bindStream(auth.userChanges());
+
+    ever(_user, _initialScreen);
+    super.onReady();
+  }
+
+  _initialScreen(User? user) {
+    if (user != null) {
+      return Get.offAllNamed(Routes.initial);
+    }
+    if (Get.currentRoute != Routes.auth) {
+      return Get.offAllNamed(Routes.auth);
+    }
+  }
+
   final List<AuthMethodConfig> standardAuthConfigs = [
     AuthMethodConfig(AuthMethod.google, googleBackgroundColor, () {}),
     AuthMethodConfig(AuthMethod.facebook, facebookBackgroundColor, () {}),
@@ -48,27 +71,38 @@ class AuthController extends GetxController {
 
   // Auth via email
   EmailAuthController email = EmailAuthController();
-  void authViaEmail() {
-    email.authenticate(isLogin: isLogin.value);
-    // ...
-  }
+  void authViaEmail() => email.authenticate(isLogin: isLogin.value);
 
   // Auth via phone
   PhoneAuthController phone = PhoneAuthController();
-  void authViaPhone() {
-    phone.authenticate();
-    // ...
-  }
+  void authViaPhone() => phone.authenticate();
 
   // Login via socials
   void loginViaSocial(AuthMethod method) {}
+
+  void signOut() {
+    try {
+      auth.signOut();
+    } on FirebaseAuthException catch (e) {
+      Get.showSnackbar(GetSnackBar(
+        message: e.code.tr,
+        duration: 5.seconds,
+        snackPosition: SnackPosition.TOP,
+        title: 'auth_error'.tr,
+      ));
+    }
+  }
 }
 
 class EmailAuthController {
   Rx<TextEditingController> emailController = TextEditingController().obs;
   Rx<TextEditingController> passwordController = TextEditingController().obs;
+
   Rx<FocusNode> emailFocusNode = FocusNode().obs;
   Rx<FocusNode> passwordFocusNode = FocusNode().obs;
+
+  String get email => emailController.value.text;
+  String get password => passwordController.value.text;
 
   RxBool showPassword = false.obs;
   void toggleShowPassword() => showPassword.toggle();
@@ -83,32 +117,51 @@ class EmailAuthController {
 
   void validateEmailAndPassword() {
     // updates with when user changes textfield
-    if (emailController.value.text.isEmail && passwordController.value.text.length >= 6) {
+    if (email.isEmail && password.length >= 6) {
       canAuthViaEmail.value = true;
       return;
     }
     canAuthViaEmail.value = false;
   }
 
-  Future<void> authenticate({required bool isLogin}) async {
+  void authenticate({required bool isLogin}) async {
     if (!canAuthViaEmail.value) return;
-    // TODO
-    if (isLogin) {
-      Get.showSnackbar(GetSnackBar(message: 'LOGIN VIA EMAIL', duration: 3.seconds));
-    } else {
-      Get.showSnackbar(GetSnackBar(message: 'REGISTER VIA EMAIL', duration: 3.seconds));
+    try {
+      if (isLogin) {
+        await auth.signInWithEmailAndPassword(email: email, password: password);
+      } else {
+        await auth.createUserWithEmailAndPassword(email: email, password: password);
+      }
+
+      emailController.value.clear();
+      passwordController.value.clear();
+    } on FirebaseAuthException catch (e) {
+      Get.showSnackbar(GetSnackBar(
+        message: e.code.tr,
+        duration: 5.seconds,
+        snackPosition: SnackPosition.TOP,
+        title: 'auth_error'.tr,
+      ));
+    } catch (e) {
+      Get.showSnackbar(GetSnackBar(
+        message: e.toString(),
+        duration: 5.seconds,
+        snackPosition: SnackPosition.TOP,
+      ));
     }
-    Get.offNamed('/market');
   }
 }
 
 class PhoneAuthController {
   // Auth via phone
   Rx<MaskedTextController> phoneNumberController = MaskedTextController(mask: '+7 (000) 000-00-00').obs;
-  Rx<FocusNode> phoneNumberFocusNode = FocusNode().obs;
-
   Rx<TextEditingController> phoneCodeController = TextEditingController().obs;
+
+  Rx<FocusNode> phoneNumberFocusNode = FocusNode().obs;
   Rx<FocusNode> phoneCodeFocusNode = FocusNode().obs;
+
+  String get phoneNumber => phoneNumberController.value.text;
+  String get phoneCode => phoneCodeController.value.text;
 
   RxBool phoneNumberValid = false.obs; // whether phone number valid (11 digits)
   RxBool phoneCodeValid = false.obs; // whether phone code valid (6 digits)
@@ -167,9 +220,5 @@ class PhoneAuthController {
     if (!phoneCodeValid.value) {
       return phoneCodeFocusNode.value.requestFocus();
     }
-
-    // AUTH TODO
-    Get.showSnackbar(GetSnackBar(message: 'AUTH VIA PHONE NUMBER', duration: 3.seconds));
-    Get.offNamed('/market');
   }
 }

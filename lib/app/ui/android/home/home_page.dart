@@ -1,24 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
+import '../../../controllers/home/home_controller.dart';
 import 'widgets/home_page_appbar.dart';
 import 'widgets/home_page_body.dart';
 
-class HomePage extends StatelessWidget {
-  HomePage({Key? key}) : super(key: key);
-  final ScrollController scrollController = ScrollController();
+class HomePage extends GetView<HomeController> {
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: CustomScrollView(
-          controller: scrollController,
-          slivers: const <Widget>[
-            HomePageAppBar(),
-            HomePageBody(),
-          ],
-        ),
-      ),
+    return const CustomScrollView(
+      slivers: <Widget>[
+        HomePageAppBar(),
+        HomePageBody(),
+      ],
     );
   }
 }

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:grouped_list/grouped_list.dart';
 
-import '../../../../controllers/home/market_search_controller.dart';
+import '../../../../controllers/home/asset_search_controller.dart';
 import '../../../../data/enums/market_types.dart';
 import '../../../../data/model/asset/asset_model.dart';
 import '../../../../data/model/asset/crypto_model.dart';
@@ -95,37 +95,7 @@ class AssetSearchSuggestionBody extends GetView<AssetSearchController> {
                                   elements: controller.filteredSuggestedAssets,
                                   groupBy: (AssetModel asset) => asset.assetType,
                                   groupSeparatorBuilder: (AssetType groupByValue) => AssetSearchGroup(groupName: groupByValue.name),
-                                  itemBuilder: (context, AssetModel asset) {
-                                    return ListTile(
-                                      title: Text(asset.displayName),
-                                      subtitle: Text(
-                                        asset.subtitle,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.fade,
-                                      ),
-                                      leading: ClipOval(
-                                        child: CachedNetworkImage(
-                                          width: 35,
-                                          height: 35,
-                                          imageUrl: asset.imageUrl ?? '',
-                                          progressIndicatorBuilder: (context, url, downloadProgress) => CircleAvatarPlaceholder(text: asset.displayName[0]),
-                                          errorWidget: (context, url, error) => CircleAvatarPlaceholder(text: asset.displayName[0]),
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        switch (asset.assetType) {
-                                          case AssetType.stocks:
-                                            asset as SearchStockModel;
-                                            print('${asset.primaryBoardId}:${asset.secId}');
-                                            break;
-                                          default:
-                                            asset as SearchCryptoModel;
-                                            print('${asset.cmcSlug}:${asset.shortName}');
-                                            break;
-                                        }
-                                      },
-                                    );
-                                  },
+                                  itemBuilder: (context, AssetModel asset) => AssetSearchItem(asset: asset),
                                 ),
                               ),
                       ],
@@ -136,6 +106,44 @@ class AssetSearchSuggestionBody extends GetView<AssetSearchController> {
             return Container();
           },
         ));
+  }
+}
+
+class AssetSearchItem extends StatelessWidget {
+  final AssetModel asset;
+  const AssetSearchItem({Key? key, required this.asset}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(asset.displayName),
+      subtitle: Text(
+        asset.subtitle,
+        maxLines: 2,
+        overflow: TextOverflow.fade,
+      ),
+      leading: ClipOval(
+        child: CachedNetworkImage(
+          width: 35,
+          height: 35,
+          imageUrl: asset.imageUrl ?? '',
+          progressIndicatorBuilder: (context, url, downloadProgress) => CircleAvatarPlaceholder(text: asset.displayName[0]),
+          errorWidget: (context, url, error) => CircleAvatarPlaceholder(text: asset.displayName[0]),
+        ),
+      ),
+      onTap: () {
+        switch (asset.assetType) {
+          case AssetType.stocks:
+            SearchStockModel stock = asset as SearchStockModel;
+            print('${stock.primaryBoardId}:${stock.secId}');
+            break;
+          default:
+            SearchCryptoModel crypto = asset as SearchCryptoModel;
+            print('${crypto.cmcSlug}:${crypto.shortName}');
+            break;
+        }
+      },
+    );
   }
 }
 
