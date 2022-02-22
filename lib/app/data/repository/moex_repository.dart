@@ -1,6 +1,6 @@
-import 'package:track_wealth/app/data/provider/coinmarketcap_api.dart';
-
-import '../model/asset/stock_model.dart';
+import '../model/asset/asset_model.dart';
+import '../model/asset/crypto_model.dart';
+import '../provider/coinmarketcap_api.dart';
 import '../provider/moex_api.dart';
 
 class AssetRepository {
@@ -9,5 +9,7 @@ class AssetRepository {
 
   AssetRepository({required this.moexApiClient, required this.cmcApiClient});
 
-  Future<List<SearchStockModel>> searchStocks(String query) => moexApiClient.searchStocks(query);
+  Future<List<SearchMoexModel>> searchMoexAssets(String query) => moexApiClient.searchMoexAssets(query);
+
+  Future<List<SearchCoinmarketcapModel>> getCoinmarketcapAssets() => cmcApiClient.getCoinmarketcapAssets();
 }

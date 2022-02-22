@@ -1,5 +1,5 @@
 final Map<String, String> enUS = {
-  'oi': 'Hello',
+  'error': 'Error',
 
   // Auth
   'login': 'Login',

@@ -14,16 +14,15 @@ class DashboardBinding implements Bindings {
   void dependencies() {
     Get.lazyPut<DashboardController>(() => DashboardController());
 
-    Get.lazyPut<HomeController>(() => HomeController());
+    // Load cmc crypto map
+    Get.put<AssetSearchController>(AssetSearchController(
+      AssetRepository(
+        moexApiClient: MoexApiClient(),
+        cmcApiClient: CoinmarketcapApiClient(),
+      ),
+    ));
 
-    Get.lazyPut<AssetSearchController>(() {
-      return AssetSearchController(
-        AssetRepository(
-          moexApiClient: MoexApiClient(),
-          cmcApiClient: CoinmarketcapApiClient(),
-        ),
-      );
-    });
+    Get.lazyPut<HomeController>(() => HomeController());
 
     Get.lazyPut<OperationsController>(() => OperationsController());
 

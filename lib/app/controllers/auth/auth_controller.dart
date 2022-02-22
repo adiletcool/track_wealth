@@ -205,7 +205,7 @@ class PhoneAuthController {
     // Start timer
     isPhoneCodeSent.value = true;
     phoneCodeFocusNode.value.requestFocus();
-    Get.showSnackbar(GetSnackBar(message: 'SENT PHONE CODE', duration: 3.seconds)); // TODO
+    Get.showSnackbar(GetSnackBar(message: 'SENT PHONE CODE', duration: 3.seconds));
   }
 
   void authenticate() {

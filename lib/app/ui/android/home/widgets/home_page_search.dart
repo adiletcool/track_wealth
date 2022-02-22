@@ -6,8 +6,6 @@ import 'package:grouped_list/grouped_list.dart';
 import '../../../../controllers/home/asset_search_controller.dart';
 import '../../../../data/enums/market_types.dart';
 import '../../../../data/model/asset/asset_model.dart';
-import '../../../../data/model/asset/crypto_model.dart';
-import '../../../../data/model/asset/stock_model.dart';
 import '../../widgets/circle_avatar_placeholder.dart';
 import 'home_page_search_empty_result.dart';
 import 'home_page_search_preset.dart';
@@ -92,7 +90,7 @@ class AssetSearchSuggestionBody extends GetView<AssetSearchController> {
                                 child: GroupedListView<AssetModel, AssetType>(
                                   sort: false,
                                   padding: const EdgeInsets.only(top: 15),
-                                  elements: controller.filteredSuggestedAssets,
+                                  elements: controller.filteredSuggestedAssets.toList(),
                                   groupBy: (AssetModel asset) => asset.assetType,
                                   groupSeparatorBuilder: (AssetType groupByValue) => AssetSearchGroup(groupName: groupByValue.name),
                                   itemBuilder: (context, AssetModel asset) => AssetSearchItem(asset: asset),
@@ -132,16 +130,20 @@ class AssetSearchItem extends StatelessWidget {
         ),
       ),
       onTap: () {
-        switch (asset.assetType) {
-          case AssetType.stocks:
-            SearchStockModel stock = asset as SearchStockModel;
-            print('${stock.primaryBoardId}:${stock.secId}');
-            break;
-          default:
-            SearchCryptoModel crypto = asset as SearchCryptoModel;
-            print('${crypto.cmcSlug}:${crypto.shortName}');
-            break;
-        }
+        // switch (asset.assetType) {
+        //   case AssetType.stocks:
+        //     SearchStockModel stock = asset as SearchStockModel;
+        //     throw UnimplementedError();
+        //   case AssetType.crypto:
+        //     SearchCoinmarketcapModel crypto = asset as SearchCoinmarketcapModel;
+        //     throw UnimplementedError();
+        //   case AssetType.currencies:
+        //     SearchCurrencyModel currency = asset as SearchCurrencyModel;
+        //     throw UnimplementedError();
+        //   case AssetType.bonds:
+        //     SearchBondModel bond = asset as SearchBondModel;
+        //     throw UnimplementedError();
+        // }
       },
     );
   }

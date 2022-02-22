@@ -9,8 +9,8 @@ import '../../widgets/circle_avatar_placeholder.dart';
 
 class MarketSection extends StatelessWidget {
   final String title;
-  final List<MarketSectionCardWithStocks>? stocks;
-  final List<MarketSectionCardWithCrypto>? crypto;
+  final Set<MarketSectionCardWithStocks>? stocks;
+  final Set<MarketSectionCardWithCrypto>? crypto;
 
   const MarketSection({
     Key? key,
@@ -49,8 +49,8 @@ class MarketSection extends StatelessWidget {
             itemBuilder: (context, index) {
               if (stocks != null) {
                 return MarketSectionCardWithStocks(
-                  title: stocks![index].title,
-                  stocks: stocks![index].stocks,
+                  title: stocks!.elementAt(index).title,
+                  stocks: stocks!.elementAt(index).stocks,
                 );
               } else if (crypto != null) {
                 return MarketSectionCardWithCrypto(title: title);
@@ -136,13 +136,15 @@ class MarketSectionCardWithStocks extends StatelessWidget {
               ],
             ),
             leading: ClipOval(
-              child: CachedNetworkImage(
-                width: 35,
-                height: 35,
-                imageUrl: a.imageUrl ?? '',
-                progressIndicatorBuilder: (context, url, downloadProgress) => CircleAvatarPlaceholder(text: a.displayName[0]),
-                errorWidget: (context, url, error) => CircleAvatarPlaceholder(text: a.displayName[0]),
-              ),
+              child: a.imageUrl == null
+                  ? CircleAvatarPlaceholder(text: a.displayName[0])
+                  : CachedNetworkImage(
+                      width: 35,
+                      height: 35,
+                      imageUrl: a.imageUrl!,
+                      progressIndicatorBuilder: (context, url, downloadProgress) => CircleAvatarPlaceholder(text: a.displayName[0]),
+                      errorWidget: (context, url, error) => CircleAvatarPlaceholder(text: a.displayName[0]),
+                    ),
             ),
             onTap: () {},
           ),

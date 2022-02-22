@@ -6,8 +6,8 @@ import '../../trade/trade_operation_data.dart';
 
 class CryptoTradeOperationData extends TradeOperationData {
   // model
-  final SearchCryptoModel base;
-  final SearchCryptoModel quote;
+  final SearchCoinmarketcapModel base;
+  final SearchCoinmarketcapModel quote;
 
   // operation details
   final num amount;
@@ -41,8 +41,8 @@ class CryptoTradeOperationData extends TradeOperationData {
 
   factory CryptoTradeOperationData.fromMap(Map<String, dynamic> map) {
     return CryptoTradeOperationData(
-      base: SearchCryptoModel.fromMap(map['base']),
-      quote: SearchCryptoModel.fromMap(map['quote']),
+      base: SearchCoinmarketcapModel.fromMap(map['base']),
+      quote: SearchCoinmarketcapModel.fromMap(map['quote']),
       amount: map['amount'],
       price: map['price'],
       fee: map['fee'],

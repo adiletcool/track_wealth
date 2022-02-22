@@ -2,13 +2,13 @@ enum MarketType {
   all,
   stocks,
   crypto,
-  bonds,
   currencies,
+  bonds,
 }
 
 enum AssetType {
   stocks,
   crypto,
-  bonds,
   currencies,
+  bonds,
 }

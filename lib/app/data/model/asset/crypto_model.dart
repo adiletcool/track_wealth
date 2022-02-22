@@ -1,41 +1,47 @@
 import '../../enums/market_types.dart';
 import 'asset_model.dart';
 
-class SearchCryptoModel implements AssetModel {
-  final String ticker;
-  final String cmcId;
-  final String cmcSlug;
-  final String shortName;
+class SearchCoinmarketcapModel implements AssetModel {
+  final int id;
+  final String name;
+  final String slug;
+  final String symbol;
 
   @override
-  String? get imageUrl => null;
+  String? get imageUrl => 'https://s2.coinmarketcap.com/static/img/coins/64x64/$id.png';
 
   @override
   AssetType get assetType => AssetType.crypto;
 
-  SearchCryptoModel({
-    required this.ticker,
-    required this.cmcId,
-    required this.cmcSlug,
-    required this.shortName,
+  SearchCoinmarketcapModel({
+    required this.id,
+    required this.name,
+    required this.slug,
+    required this.symbol,
   });
 
   @override
-  String get subtitle => ticker;
+  String get subtitle => symbol;
 
   @override
-  String get displayName => shortName;
+  String get displayName => name;
 
-  Map<String, String> toMap() => {
-        "ticker": ticker,
-        "cmcId": cmcId,
-        "cmcSlug": cmcSlug,
-        "shortName": shortName,
+  SearchCoinmarketcapModel.fromMap(Map<String, dynamic> map)
+      : id = map['id'],
+        name = map['name'],
+        slug = map['slug'],
+        symbol = map['symbol'];
+
+  Map<String, dynamic> toMap() => {
+        "id": id,
+        "name": name,
+        "slug": slug,
+        "symbol": symbol,
       };
 
-  SearchCryptoModel.fromMap(Map<String, dynamic> map)
-      : ticker = map['ticker'],
-        cmcId = map['cmcId'],
-        cmcSlug = map['cmcSlug'],
-        shortName = map['shortName'];
+  static fromListOfMaps(List<Map<String, dynamic>> listOfMaps) {
+    return listOfMaps.map((Map<String, dynamic> m) {
+      return SearchCoinmarketcapModel.fromMap(m);
+    }).toList();
+  }
 }

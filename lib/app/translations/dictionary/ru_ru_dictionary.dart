@@ -1,5 +1,5 @@
 final Map<String, String> ruRU = {
-  'oi': 'Привет',
+  'error': 'Ошибка',
 
   // Auth
   'login': 'Вход',
