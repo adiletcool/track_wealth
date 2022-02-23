@@ -1,10 +1,10 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:device_preview/device_preview.dart';
-import 'package:track_wealth/app/controllers/auth/auth_controller.dart';
 
+import 'app/controllers/auth/auth_controller.dart';
 import 'app/routes/app_pages.dart';
 import 'app/translations/add_translations.dart';
 import 'app/ui/theme/app_theme.dart';

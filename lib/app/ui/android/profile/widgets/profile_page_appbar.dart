@@ -9,6 +9,7 @@ class ProfilePageAppBar extends StatelessWidget {
     return SliverAppBar(
       title: Text('profile'.tr),
       elevation: 0,
+      centerTitle: true,
     );
   }
 }

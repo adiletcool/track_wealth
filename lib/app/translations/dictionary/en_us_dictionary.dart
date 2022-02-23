@@ -16,9 +16,11 @@ final Map<String, String> enUS = {
   'change_phone_number': 'Change phone number',
   // auth exceptions
   'auth_error': 'Authentication error',
+  'too-many-requests': 'Too many requests. Try again later.',
   'user-not-found': 'No user with such an email was found.',
   'phone-number-already-exists': 'The provided phone number is already in use by an existing user.',
   'email-already-exists': 'The provided email is already in use by an existing user.',
+  'email-already-in-use': 'The provided email is already in use by an existing user.',
   'invalid-phone-number': 'The provided value for the phone number is invalid.',
   'invalid-email': 'The provided value for the email is invalid.',
   'invalid-password': 'Incorrect login or password.',
@@ -40,6 +42,9 @@ final Map<String, String> enUS = {
   'finance': 'Finance',
   'energy': 'Energy',
   'nothing_found': 'Nothing found.\nTry another query.',
+
+  // Moex asset page
+  'Period must be positive': 'Period must be positive',
 
   // Profile page
   'profile': 'Profile',

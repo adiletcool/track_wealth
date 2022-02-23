@@ -1,13 +1,13 @@
 import 'package:get/get.dart';
-import 'package:track_wealth/app/controllers/operations/operations_controller.dart';
-import 'package:track_wealth/app/controllers/profile/profile_controller.dart';
 
 import '../controllers/dashboard/dashboard_controller.dart';
 import '../controllers/home/asset_search_controller.dart';
 import '../controllers/home/home_controller.dart';
+import '../controllers/operations/operations_controller.dart';
+import '../controllers/profile/profile_controller.dart';
 import '../data/provider/coinmarketcap_api.dart';
 import '../data/provider/moex_api.dart';
-import '../data/repository/moex_repository.dart';
+import '../data/repository/asset_repository.dart';
 
 class DashboardBinding implements Bindings {
   @override

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:track_wealth/app/ui/android/operations/operations_page.dart';
 
 import '../../controllers/dashboard/dashboard_controller.dart';
 import 'home/home_page.dart';
+import 'operations/operations_page.dart';
 import 'profile/profile_page.dart';
 
 class DashboardPage extends GetView<DashboardController> {

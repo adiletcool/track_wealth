@@ -1,8 +1,12 @@
 import '../../enums/market_types.dart';
 import 'asset_model.dart';
 
+enum StockPrimaryBoardId { tqbr, fqbr }
+
 class SearchStockModel extends SearchMoexModel {
   SearchStockModel.fromMap(Map<String, dynamic> map) : super.fromMap(map);
+
+  StockPrimaryBoardId get stockPrimaryBoardId => StockPrimaryBoardId.values.byName(primaryBoardId.toLowerCase());
 
   @override
   AssetType get assetType => AssetType.stocks;

@@ -16,9 +16,11 @@ final Map<String, String> ruRU = {
   'change_phone_number': 'Изменить номер',
   // auth exceptions
   'auth_error': 'Ошибка авторизации',
+  'too-many-requests': 'Слишком много запросов. Попробуйте позднее.',
   'user-not-found': 'Пользователь с такой почтой не найден.',
   'phone-number-already-exists': 'Указанный номер телефона уже используется существующим пользователем.',
   'email-already-exists': 'Указанный адрес электронной почты уже используется существующим пользователем.',
+  'email-already-in-use': 'Указанный адрес электронной почты уже используется существующим пользователем.',
   'invalid-phone-number': 'Номер телефона недействителен.',
   'invalid-email': 'Электронная почта недействительна.',
   'invalid-password': 'Неверный логин или пароль.',
@@ -41,6 +43,8 @@ final Map<String, String> ruRU = {
   'energy': 'Энергетика',
   'nothing_found': 'Ничего не найдено.\nПопробуйте написать по-другому.',
 
+  // Moex asset page
+  'Period must be positive': 'Период должен быть положительным.',
   // Profile page
   'profile': 'Профиль',
 };

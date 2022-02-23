@@ -5,6 +5,7 @@ import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:get/get.dart';
 
 import '../../constants/firebase_constants.dart';
+import '../../constants/show_snackbars.dart';
 import '../../data/enums/auth.dart';
 import '../../routes/app_pages.dart';
 import '../../ui/theme/app_color.dart';
@@ -80,16 +81,11 @@ class AuthController extends GetxController {
   // Login via socials
   void loginViaSocial(AuthMethod method) {}
 
-  void signOut() {
+  void signOut() async {
     try {
       auth.signOut();
     } on FirebaseAuthException catch (e) {
-      Get.showSnackbar(GetSnackBar(
-        message: e.code.tr,
-        duration: 5.seconds,
-        snackPosition: SnackPosition.TOP,
-        title: 'auth_error'.tr,
-      ));
+      showDefaultSnackbar(message: e.code.tr, title: 'auth_error'.tr);
     }
   }
 }
@@ -136,18 +132,9 @@ class EmailAuthController {
       emailController.value.clear();
       passwordController.value.clear();
     } on FirebaseAuthException catch (e) {
-      Get.showSnackbar(GetSnackBar(
-        message: e.code.tr,
-        duration: 5.seconds,
-        snackPosition: SnackPosition.TOP,
-        title: 'auth_error'.tr,
-      ));
+      showDefaultSnackbar(message: e.code.tr, title: 'auth_error'.tr);
     } catch (e) {
-      Get.showSnackbar(GetSnackBar(
-        message: e.toString(),
-        duration: 5.seconds,
-        snackPosition: SnackPosition.TOP,
-      ));
+      showDefaultSnackbar(message: e.toString(), title: 'auth_error'.tr);
     }
   }
 }
@@ -205,7 +192,8 @@ class PhoneAuthController {
     // Start timer
     isPhoneCodeSent.value = true;
     phoneCodeFocusNode.value.requestFocus();
-    Get.showSnackbar(GetSnackBar(message: 'SENT PHONE CODE', duration: 3.seconds));
+
+    showDefaultSnackbar(message: 'SENT PHONE CODE', duration: 3.seconds);
   }
 
   void authenticate() {

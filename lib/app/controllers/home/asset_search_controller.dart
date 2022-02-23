@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import '../../data/enums/market_types.dart';
 import '../../data/model/asset/asset_model.dart';
 import '../../data/model/asset/crypto_model.dart';
-import '../../data/repository/moex_repository.dart';
+import '../../data/repository/asset_repository.dart';
 
 class AssetSearchController extends GetxController {
   final AssetRepository assetRepository;
