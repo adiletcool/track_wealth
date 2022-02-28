@@ -21,24 +21,32 @@ class SearchStockModel extends SearchMoexModel {
   }
 }
 
-class StockModelWithMarketData extends SearchStockModel {
+class StockModelWithMarketData extends MoexModelWithMarketData {
   final num lastPrice;
-  final num todayChangePercent;
-  final num todayChangeNominal;
+  final num dayChangePercent;
+  final num dayChangeNominal;
   final int priceDecimals;
 
   final int lotSize;
 
   final String updateTime;
   final num? marketCapitalization;
+  final num dayVolume;
+
+  @override
+  AssetType get assetType => AssetType.stocks;
+
+  @override
+  String? get imageUrl => isin == null ? null : 'https://invest-brands.cdn-tinkoff.ru/${isin}x160.png';
 
   StockModelWithMarketData.fromMap(Map<String, dynamic> map)
-      : lastPrice = map['LASTPRICE'],
-        todayChangePercent = map['todayChangePercent'],
-        todayChangeNominal = map['todayChangeNominal'],
-        priceDecimals = map['priceDecimals'],
-        lotSize = map['lotSize'],
-        updateTime = map['updateTime'],
-        marketCapitalization = map['marketCapitalization'],
+      : lastPrice = map['LAST'] ?? map['MARKETPRICE'],
+        dayChangePercent = map['LASTTOPREVPRICE'],
+        dayChangeNominal = map['CHANGE'],
+        priceDecimals = map['DECIMALS'],
+        lotSize = map['LOTSIZE'],
+        updateTime = map['UPDATETIME'],
+        marketCapitalization = map['ISSUECAPITALIZATION'],
+        dayVolume = map['VALTODAY'],
         super.fromMap(map);
 }

@@ -131,6 +131,7 @@ class EmailAuthController {
 
       emailController.value.clear();
       passwordController.value.clear();
+      canAuthViaEmail.value = false;
     } on FirebaseAuthException catch (e) {
       showDefaultSnackbar(message: e.code.tr, title: 'auth_error'.tr);
     } catch (e) {

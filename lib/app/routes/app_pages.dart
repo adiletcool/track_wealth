@@ -1,7 +1,8 @@
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:track_wealth/app/controllers/asset/asset_page_binding.dart';
 
-import '../bindings/dashboard_binding.dart';
+import '../controllers/dashboard/dashboard_binding.dart';
+import '../ui/android/asset/asset_page.dart';
 import '../ui/android/auth/auth_page.dart';
 import '../ui/android/dashboard_page.dart';
 
@@ -11,17 +12,17 @@ class AppPages {
   static final pages = [
     GetPage(
       name: Routes.auth,
-      page: () {
-        SystemChrome.setPreferredOrientations(
-          [DeviceOrientation.portraitUp],
-        );
-        return AuthPage();
-      },
+      page: () => AuthPage(),
     ),
     GetPage(
       name: Routes.initial,
       page: () => DashboardPage(),
       binding: DashboardBinding(),
     ),
+    GetPage(
+      name: Routes.asset,
+      page: () => const AssetPage(),
+      binding: AssetPageBinding(),
+    )
   ];
 }

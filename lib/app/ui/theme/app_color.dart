@@ -25,4 +25,8 @@ const Color lightGreyColor = Color(0xffF5F5F5);
 const Color blueColor = Color(0xFF2A5BDD);
 const Color inactiveButtonColor = Color(0xff574B90);
 const Color darkBackgroundColor = Color(0xff161817);
+
+const Color greenBrightColor = Color(0xff00D7A3);
+const Color redBrightColor = Color(0xffED386A);
+
 Color transparentGreyColor = Colors.grey.withOpacity(0.15);

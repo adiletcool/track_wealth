@@ -169,16 +169,16 @@ class ThirdLineSubtitle extends StatelessWidget {
   final StockModelWithMarketData asset;
   const ThirdLineSubtitle({Key? key, required this.asset}) : super(key: key);
 
-  bool get isFalling => asset.todayChangePercent < 0;
+  bool get isFalling => asset.dayChangePercent < 0;
 
   Icon get icon => isFalling ? Icon(Icons.south_east_rounded, size: 15, color: iconColor) : Icon(Icons.north_east_rounded, size: 15, color: iconColor);
   Color get iconColor => isFalling ? Colors.red : Colors.green;
 
-  num get todayAbsChange => asset.todayChangeNominal.abs().roundZeros();
+  num get todayAbsChange => asset.dayChangeNominal.abs().roundZeros();
   int get todayAbsChangeDecimals => todayAbsChange.countDecimals();
 
   String get changeNominal => todayAbsChange.currencyFormat(locale: 'ru', symbol: '₽', decimals: asset.priceDecimals);
-  String get changePercent => ' · ' + (asset.todayChangePercent / 100).abs().percentFormat(decimals: 2);
+  String get changePercent => ' · ' + (asset.dayChangePercent / 100).abs().percentFormat(decimals: 2);
 
   String get subtitle => changeNominal + changePercent;
 

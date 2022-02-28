@@ -1,9 +1,22 @@
 enum MoexAssetHistoryInterval {
-  m1, // a minute
-  m10, // 10 minutes
-  h, // an hour
-  d, // a day
-  w, // a week
-  M, // a mont
-  Q, // a quarter
+  /// a minute
+  m1,
+
+  /// 10 minutes
+  m10,
+
+  /// an hour
+  h,
+
+  /// a day
+  d,
+
+  /// a week
+  w,
+
+  /// a mont
+  M,
+
+  /// a quarter
+  Q,
 }

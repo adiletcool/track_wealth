@@ -1,4 +1,4 @@
-final Map<String, String> enUS = {
+final Map<String, String> en = {
   'error': 'Error',
 
   // Auth
@@ -48,4 +48,8 @@ final Map<String, String> enUS = {
 
   // Profile page
   'profile': 'Profile',
+
+  // asset page
+  'volume24h': 'Volume (24h)',
+  'capitalization': 'Capitalization',
 };

@@ -4,11 +4,6 @@ import '../../constants/show_snackbars.dart';
 import '../model/asset/crypto_model.dart';
 
 class CoinmarketcapApiClient extends GetConnect {
-// Get all active cryptocurrencies and cryptoexchanges
-
-  @override
-  void onInit() {}
-
   Future<List<SearchCoinmarketcapModel>> getCoinmarketcapAssets() async {
     /// Returns list of
     var response = await get('https://api.coinmarketcap.com/data-api/v3/map/all?listing_status=active&start=1&limit=10000');

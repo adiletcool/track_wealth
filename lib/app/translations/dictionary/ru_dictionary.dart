@@ -1,4 +1,4 @@
-final Map<String, String> ruRU = {
+final Map<String, String> ru = {
   'error': 'Ошибка',
 
   // Auth
@@ -47,4 +47,8 @@ final Map<String, String> ruRU = {
   'Period must be positive': 'Период должен быть положительным.',
   // Profile page
   'profile': 'Профиль',
+
+  // asset page
+  'volume24h': 'Объем (24ч)',
+  'capitalization': 'Капитализация',
 };

@@ -28,11 +28,11 @@ abstract class SearchMoexModel implements AssetModel {
   String get displayName => shortName;
 
   SearchMoexModel.fromMap(Map<String, dynamic> map)
-      : isin = map['isin'],
-        primaryBoardId = map['primary_boardid'],
-        secId = map['secid'],
-        shortName = map['shortname'],
-        name = map['name'];
+      : isin = map['isin'] ?? map['ISIN'],
+        primaryBoardId = map['primary_boardid'] ?? map['BOARDID'],
+        secId = map['secid'] ?? map['SECID'],
+        shortName = map['shortname'] ?? map['SHORTNAME'],
+        name = map['name'] ?? map['SECNAME'];
 
   Map<String, dynamic> toMap() => {
         "isin": isin,
@@ -41,4 +41,8 @@ abstract class SearchMoexModel implements AssetModel {
         "shortname": shortName,
         "name": name,
       };
+}
+
+abstract class MoexModelWithMarketData extends SearchMoexModel {
+  MoexModelWithMarketData.fromMap(Map<String, dynamic> map) : super.fromMap(map);
 }
