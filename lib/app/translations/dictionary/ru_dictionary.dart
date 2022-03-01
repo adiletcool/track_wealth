@@ -51,4 +51,9 @@ final Map<String, String> ru = {
   // asset page
   'volume24h': 'Объем (24ч)',
   'capitalization': 'Капитализация',
+  '24h': '24ч',
+  '7d': '7д',
+  '30d': '30д',
+  '90d': '90д',
+  '1Y': '1Г',
 };

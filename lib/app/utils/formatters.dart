@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 final NumberFormat _doubleFormatter = NumberFormat('#,##0.00');
@@ -24,10 +25,14 @@ extension CustomNumUtils on num {
   }
 
   String currencyFormat({String? locale, String? symbol, int? decimals}) {
-    return NumberFormat.currency(decimalDigits: decimals, locale: locale, symbol: symbol).format(this);
+    return NumberFormat.currency(decimalDigits: decimals, locale: locale ?? Get.deviceLocale?.languageCode, symbol: symbol).format(this);
   }
 
   String percentFormat({String? locale, int? decimals}) {
-    return NumberFormat.decimalPercentPattern(locale: locale, decimalDigits: decimals).format(this);
+    return NumberFormat.decimalPercentPattern(locale: locale ?? Get.deviceLocale?.languageCode, decimalDigits: decimals).format(this);
+  }
+
+  String compactFormat({String? locale}) {
+    return NumberFormat.compact(locale: locale ?? Get.deviceLocale?.languageCode).format(this);
   }
 }

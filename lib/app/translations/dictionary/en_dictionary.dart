@@ -52,4 +52,9 @@ final Map<String, String> en = {
   // asset page
   'volume24h': 'Volume (24h)',
   'capitalization': 'Capitalization',
+  '24h': '24h',
+  '7d': '7d',
+  '30d': '30d',
+  '90d': '90d',
+  '1Y': '1Y',
 };

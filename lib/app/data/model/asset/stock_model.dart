@@ -40,9 +40,9 @@ class StockModelWithMarketData extends MoexModelWithMarketData {
   String? get imageUrl => isin == null ? null : 'https://invest-brands.cdn-tinkoff.ru/${isin}x160.png';
 
   StockModelWithMarketData.fromMap(Map<String, dynamic> map)
-      : lastPrice = map['LAST'] ?? map['MARKETPRICE'],
-        dayChangePercent = map['LASTTOPREVPRICE'],
-        dayChangeNominal = map['CHANGE'],
+      : lastPrice = map['LAST'] ?? map['MARKETPRICE'] ?? map['LCLOSEPRICE'] ?? map['LCURRENTPRICE'],
+        dayChangePercent = map['LASTTOPREVPRICE'] ?? 0,
+        dayChangeNominal = map['CHANGE'] ?? 0,
         priceDecimals = map['DECIMALS'],
         lotSize = map['LOTSIZE'],
         updateTime = map['UPDATETIME'],

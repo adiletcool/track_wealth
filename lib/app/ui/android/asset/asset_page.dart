@@ -1,16 +1,15 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:track_wealth/app/ui/theme/app_color.dart';
 
 import '../../../controllers/asset/asset_page_controller.dart';
 import '../../../data/enums/market_types.dart';
-import '../../../data/model/asset/stock_model.dart';
+import '../../../data/model/asset_history/asset_history_interval.dart';
 import '../../../data/model/asset_history/ohlcv_model.dart';
-import '../../theme/app_color.dart';
 import '../widgets/loading_widget.dart';
 import 'widgets/asset_page_appbar.dart';
+import 'widgets/asset_page_chart.dart';
+import 'widgets/asset_page_md_row.dart';
 
 class AssetPage extends GetView<AssetPageController> {
   const AssetPage({Key? key}) : super(key: key);
@@ -49,7 +48,9 @@ class AssetPageBody extends StatelessWidget {
       sliver: SliverFillRemaining(
         child: Column(
           children: [
-            const AssetPageMarketData(),
+            const AssetPageMarketDataRow(),
+            const AssetPageIntervalRow(),
+            const SizedBox(height: 10),
             AssetPageHistoryChart(assetHistory: assetHistory),
           ],
         ),
@@ -58,139 +59,79 @@ class AssetPageBody extends StatelessWidget {
   }
 }
 
-class AssetPageMarketData extends GetView<AssetPageController> {
-  const AssetPageMarketData({Key? key}) : super(key: key);
+class AssetPageIntervalRow extends GetView<AssetPageController> {
+  const AssetPageIntervalRow({Key? key}) : super(key: key);
 
-  Widget getBody(BuildContext context) {
+  List<AssetHistoryInterval> get intervals {
     switch (controller.asset.assetType) {
       case AssetType.stocks:
-        StockModelWithMarketData mdStock = controller.mdAsset as StockModelWithMarketData;
-        bool isFalling = mdStock.dayChangeNominal < 0;
-        Color subtitleColor = isFalling ? Colors.white : Colors.black;
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                children: [
-                  Text(
-                    NumberFormat.currency(locale: 'ru', decimalDigits: mdStock.priceDecimals, symbol: '₽').format(mdStock.lastPrice),
-                    style: Get.textTheme.headlineSmall,
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: isFalling ? redBrightColor : greenBrightColor,
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(isFalling ? Icons.south_east_rounded : Icons.north_east_rounded, size: 15, color: subtitleColor),
-                        const SizedBox(width: 10),
-                        Text(mdStock.dayChangeNominal.abs().toString(), style: TextStyle(color: subtitleColor, fontSize: 15)),
-                        const SizedBox(width: 10),
-                        Text('(${mdStock.dayChangeNominal.abs().toString()})', style: TextStyle(color: subtitleColor, fontSize: 15)),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              Tooltip(
-                showDuration: 5.seconds,
-                message: 'volume24h'.tr +
-                    ': ${NumberFormat.compact(locale: Get.locale?.languageCode).format(mdStock.dayVolume)}\n' +
-                    'capitalization'.tr.tr +
-                    ': ${NumberFormat.compact(locale: Get.locale?.languageCode).format(mdStock.marketCapitalization)}',
-                child: Icon(
-                  Icons.info_rounded,
-                  size: 28,
-                  color: ThemeBasedColor(context, Colors.black, Colors.white),
-                ),
-              ),
-            ],
-          ),
-        );
-
+        return MoexAssetHistoryInterval.all();
       default:
-        // TODO
         throw UnimplementedError();
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return getBody(context);
-  }
-}
-
-List<CandleSeries<OhlcvModel, DateTime>> _computeCandleSeries(List<OhlcvModel> series) {
-  return <CandleSeries<OhlcvModel, DateTime>>[
-    CandleSeries(
-      bullColor: greenBrightColor,
-      bearColor: redBrightColor,
-      enableSolidCandles: true,
-      dataSource: series,
-      xValueMapper: (OhlcvModel ohlcv, _) => DateTime.fromMillisecondsSinceEpoch(ohlcv.timestamp),
-      lowValueMapper: (OhlcvModel ohlcv, _) => ohlcv.low,
-      highValueMapper: (OhlcvModel ohlcv, _) => ohlcv.high,
-      openValueMapper: (OhlcvModel ohlcv, _) => ohlcv.open,
-      closeValueMapper: (OhlcvModel ohlcv, _) => ohlcv.close,
-    ),
-  ];
-}
-
-class AssetPageHistoryChart extends StatelessWidget {
-  final List<OhlcvModel> assetHistory;
-
-  const AssetPageHistoryChart({Key? key, required this.assetHistory}) : super(key: key);
-
-  Future<List<CandleSeries<OhlcvModel, DateTime>>> _getCandleSeries() async {
-    return await compute(_computeCandleSeries, assetHistory);
+  double get intervalWidth {
+    return (Get.width - 32) / (intervals.length * 1.25);
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: _getCandleSeries(),
-        builder: (context, AsyncSnapshot<List<CandleSeries<OhlcvModel, DateTime>>> snapshot) {
-          if ((snapshot.connectionState == ConnectionState.waiting) || !snapshot.hasData) {
-            return const LoadingWidget();
-          }
-          return SfCartesianChart(
-            series: snapshot.data,
-            plotAreaBorderWidth: 0,
-            borderWidth: 0,
-            margin: const EdgeInsets.only(left: 10),
-            trackballBehavior: TrackballBehavior(
-              enable: true,
-              activationMode: ActivationMode.singleTap,
-              lineDashArray: const [5, 5],
-              lineColor: Colors.grey.shade500,
-            ),
-            primaryXAxis: DateTimeCategoryAxis(
-              rangePadding: ChartRangePadding.none,
-              desiredIntervals: 4,
-              labelPosition: ChartDataLabelPosition.inside,
-              majorTickLines: const MajorTickLines(width: 0),
-              tickPosition: TickPosition.inside,
-              majorGridLines: const MajorGridLines(width: 0),
-              opposedPosition: true,
-              dateFormat: DateFormat.MMMd(),
-            ),
-            primaryYAxis: NumericAxis(
-              axisLine: const AxisLine(width: 0),
-              edgeLabelPlacement: EdgeLabelPlacement.hide,
-              tickPosition: TickPosition.inside,
-              majorTickLines: const MajorTickLines(width: 0),
-              minorTickLines: const MinorTickLines(width: 0),
-              opposedPosition: true,
-              rangePadding: ChartRangePadding.round,
-              // minimum: (assetHistory.map((e) => e.low).reduce(math.min) * 0.85).toPrecision(1),
-              // maximum: (assetHistory.map((e) => e.low).reduce(math.max) * 1.15).toPrecision(1),
-            ),
-          );
-        });
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      decoration: BoxDecoration(
+        color: ThemeBasedColor(context, greyColor, greyColor2).withOpacity(.4),
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Obx(() => Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: intervals.map((i) {
+              return AssetHistoryIntervalButton(
+                interval: i,
+                isSelected: controller.chartInterval.value == i,
+                width: intervalWidth,
+                onTap: () => controller.setChartInterval(i),
+              );
+            }).toList(),
+          )),
+    );
+  }
+}
+
+class AssetHistoryIntervalButton extends StatelessWidget {
+  final AssetHistoryInterval interval;
+  final bool isSelected;
+  final double width;
+  final void Function() onTap;
+
+  const AssetHistoryIntervalButton({
+    Key? key,
+    required this.interval,
+    required this.isSelected,
+    required this.width,
+    required this.onTap,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        alignment: Alignment.center,
+        width: width,
+        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 4),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(7),
+          color: isSelected ? (ThemeBasedColor(context, Get.theme.colorScheme.primary, Colors.yellow)).withOpacity(.5) : null,
+        ),
+        child: Text(
+          interval.title,
+          style: TextStyle(
+            fontSize: 14,
+            color: isSelected ? ThemeBasedColor(context, Colors.black, Colors.white) : null,
+          ),
+        ),
+      ),
+    );
   }
 }

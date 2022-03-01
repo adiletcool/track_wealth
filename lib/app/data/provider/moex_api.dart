@@ -4,11 +4,11 @@ import 'package:get/get.dart';
 
 import '../../constants/show_snackbars.dart';
 import '../enums/market_types.dart';
-import '../enums/moex_enums.dart';
 import '../model/asset/asset_model.dart';
 import '../model/asset/bond_model.dart';
 import '../model/asset/currency_model.dart';
 import '../model/asset/stock_model.dart';
+import '../model/asset_history/asset_history_interval.dart';
 import '../model/asset_history/ohlcv_model.dart';
 
 class MoexApiClient extends GetConnect {
@@ -53,8 +53,7 @@ class MoexApiClient extends GetConnect {
 
   Future<List<OhlcvModel>> getMoexAssetHistory({
     required SearchMoexModel asset,
-    required MoexAssetHistoryInterval interval,
-    required int nCandles,
+    required AssetHistoryInterval interval,
   }) async {
     String url;
     Map<String, dynamic> params;
@@ -62,13 +61,13 @@ class MoexApiClient extends GetConnect {
     switch (asset.assetType) {
       case AssetType.stocks:
         SearchStockModel stock = asset as SearchStockModel;
+        interval as MoexAssetHistoryInterval;
 
         String sharesType = stock.stockPrimaryBoardId == StockPrimaryBoardId.tqbr ? 'shares' : 'foreignshares';
         int boardGroups = stock.stockPrimaryBoardId == StockPrimaryBoardId.tqbr ? 57 : 265;
-        int _interval = _getInterval(interval);
 
         url = "$base/cs/engines/stock/markets/$sharesType/boardgroups/$boardGroups/securities/${stock.secId}.hs";
-        params = {"s1.type": "candles", "interval": _interval.toString(), "candles": nCandles.toString()};
+        params = {"s1.type": "candles", "interval": interval.qInt.toString(), "candles": interval.nCandles.toString()};
         break;
 
       case AssetType.bonds:
@@ -107,25 +106,6 @@ class MoexApiClient extends GetConnect {
       ),
     );
     return result;
-  }
-
-  int _getInterval(MoexAssetHistoryInterval interval) {
-    switch (interval) {
-      case MoexAssetHistoryInterval.m1:
-        return 1;
-      case MoexAssetHistoryInterval.m10:
-        return 10;
-      case MoexAssetHistoryInterval.h:
-        return 60;
-      case MoexAssetHistoryInterval.d:
-        return 24;
-      case MoexAssetHistoryInterval.w:
-        return 7;
-      case MoexAssetHistoryInterval.M:
-        return 31;
-      case MoexAssetHistoryInterval.Q:
-        return 4;
-    }
   }
 
   Future<MoexModelWithMarketData?> getMoexAssetWithMarketData(SearchMoexModel asset) async {
