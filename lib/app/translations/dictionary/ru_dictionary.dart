@@ -1,5 +1,7 @@
 final Map<String, String> ru = {
   'error': 'Ошибка',
+  'no_internet_connection': 'Нет соединения с интернетом.',
+  'check_connection_try_again': 'Проверьте подключение к сети и попробуйте снова.',
 
   // Auth
   'login': 'Вход',
@@ -49,6 +51,8 @@ final Map<String, String> ru = {
   'profile': 'Профиль',
 
   // asset page
+  'price': 'Цена',
+  'volume': 'Объем',
   'volume24h': 'Объем (24ч)',
   'capitalization': 'Капитализация',
   '24h': '24ч',

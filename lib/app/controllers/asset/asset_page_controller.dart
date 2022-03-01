@@ -1,9 +1,10 @@
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../../data/enums/market_types.dart';
 import '../../data/model/asset/asset_model.dart';
-import '../../data/model/asset_history/asset_history_interval.dart';
-import '../../data/model/asset_history/ohlcv_model.dart';
+import '../../data/model/asset_chart/asset_chart_interval.dart';
+import '../../data/model/asset_chart/ohlcv_model.dart';
 import '../../data/repository/asset_repository.dart';
 
 class AssetPageController extends GetxController {
@@ -13,29 +14,38 @@ class AssetPageController extends GetxController {
 
   AssetModel asset = Get.arguments;
 
-  late final Future<void> initialLoad;
-  late final List<OhlcvModel> assetHistory;
+  RxBool isInitalLoaded = false.obs;
+  Rx<Future<void>> isChartLoading = Future<void>.value().obs;
+
+  late List<OhlcvModel> assetChart;
   late final MoexModelWithMarketData? mdAsset;
 
-  Rx<AssetHistoryInterval> chartInterval = MoexAssetHistoryInterval.M().obs;
+  Rx<AssetChartInterval> chartInterval = MoexAssetChartInterval.M().obs;
+  RxBool trackballVisible = false.obs; // interaction with graph (long press)
 
-  void setChartInterval(AssetHistoryInterval interval) {
-    // TODO: load series with new interval
-    chartInterval.value = interval;
+  RxInt trackballIndex = 0.obs;
+
+  String get trackballDate {
+    var ts = assetChart[trackballIndex.value].timestamp;
+    var dt = DateTime.fromMillisecondsSinceEpoch(ts);
+    return DateFormat.yMMMd(Get.deviceLocale?.languageCode).add_Hm().format(dt);
   }
 
-  Future<List<OhlcvModel>> getMoexAssetHistory({
-    required SearchMoexModel asset,
-    required AssetHistoryInterval interval,
-  }) =>
-      assetRepository.getMoexAssetHistory(asset: asset, interval: interval);
+  void setChartInterval(AssetChartInterval interval) {
+    chartInterval.value = interval;
+    isChartLoading.value = loadAssetChart();
+  }
 
-  Future<void> loadInitialAssetHistory() async {
+  void setTrackballVisibility(bool isVisible) => trackballVisible.value = isVisible;
+  void setTrackballIndex(int seriesIndex) => trackballIndex.value = seriesIndex;
+
+  Future<void> loadAssetChart() async {
+    /// Loads ohlcv series for chart
     print('Loading initial asset history');
 
     switch (asset.assetType) {
       case AssetType.stocks:
-        assetHistory = await getMoexAssetHistory(asset: asset as SearchMoexModel, interval: chartInterval.value);
+        assetChart = await assetRepository.getMoexAssetHistory(asset: asset as SearchMoexModel, interval: chartInterval.value);
         print('Asset history loaded');
         break;
       case AssetType.bonds:
@@ -46,6 +56,7 @@ class AssetPageController extends GetxController {
   }
 
   Future<void> loadMdAsset() async {
+    /// loads asset with market data: last price, day change, etc.
     print('Loading initial asset market data');
     switch (asset.assetType) {
       case AssetType.stocks:
@@ -61,10 +72,9 @@ class AssetPageController extends GetxController {
 
   @override
   void onInit() {
-    initialLoad = Future.wait([
-      loadInitialAssetHistory(),
-      loadMdAsset(),
-    ]);
+    isChartLoading.value = Future.wait([loadAssetChart(), loadMdAsset()]);
+    isChartLoading.value.then((_) => isInitalLoaded.value = true);
+
     super.onInit();
   }
 }

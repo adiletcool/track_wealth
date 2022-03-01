@@ -57,6 +57,7 @@ class AssetPageMarketDataRow extends GetView<AssetPageController> {
           ),
           Tooltip(
             showDuration: 5.seconds,
+            triggerMode: TooltipTriggerMode.tap,
             message: getStockTooltipMessage(dayVolume: dayVolume, marketCapitalization: marketCapitalization),
             child: Icon(
               Icons.info_rounded,

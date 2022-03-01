@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../../data/model/asset/asset_model.dart';
+import '../../../../controllers/asset/asset_page_controller.dart';
 import '../../../theme/app_color.dart';
 
-class AssetPageAppBar extends StatelessWidget {
-  final AssetModel asset;
-
-  const AssetPageAppBar(this.asset, {Key? key}) : super(key: key);
+class AssetPageAppBar extends GetView<AssetPageController> {
+  const AssetPageAppBar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,11 +24,11 @@ class AssetPageAppBar extends StatelessWidget {
       title: ListTile(
         contentPadding: const EdgeInsets.all(0),
         title: Text(
-          asset.displayName,
+          controller.asset.displayName,
           style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
           overflow: TextOverflow.ellipsis,
         ),
-        subtitle: Text(asset.subtitle),
+        subtitle: Text(controller.asset.subtitle),
       ),
       centerTitle: false,
       backgroundColor: Get.theme.scaffoldBackgroundColor,

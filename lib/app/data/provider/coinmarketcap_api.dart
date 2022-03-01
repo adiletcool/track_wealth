@@ -9,7 +9,7 @@ class CoinmarketcapApiClient extends GetConnect {
     var response = await get('https://api.coinmarketcap.com/data-api/v3/map/all?listing_status=active&start=1&limit=10000');
 
     if (response.statusCode != 200) {
-      showDefaultSnackbar(message: response.statusCode.toString(), title: 'error'.tr);
+      showDefaultSnackbar(message: 'check_connection_try_again'.tr, title: 'no_internet_connection'.tr);
       return [];
     }
 

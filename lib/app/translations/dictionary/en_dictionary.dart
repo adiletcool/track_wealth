@@ -1,6 +1,7 @@
 final Map<String, String> en = {
   'error': 'Error',
-
+  'no_internet_connection': 'No internet connection.',
+  'check_connection_try_again': 'Please check your internet connection and try again.',
   // Auth
   'login': 'Login',
   'register': 'Sign up',
@@ -50,6 +51,8 @@ final Map<String, String> en = {
   'profile': 'Profile',
 
   // asset page
+  'price': 'Price',
+  'volume': 'Volume',
   'volume24h': 'Volume (24h)',
   'capitalization': 'Capitalization',
   '24h': '24h',

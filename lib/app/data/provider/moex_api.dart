@@ -8,8 +8,8 @@ import '../model/asset/asset_model.dart';
 import '../model/asset/bond_model.dart';
 import '../model/asset/currency_model.dart';
 import '../model/asset/stock_model.dart';
-import '../model/asset_history/asset_history_interval.dart';
-import '../model/asset_history/ohlcv_model.dart';
+import '../model/asset_chart/asset_chart_interval.dart';
+import '../model/asset_chart/ohlcv_model.dart';
 
 class MoexApiClient extends GetConnect {
   static String base = "https://iss.moex.com";
@@ -23,7 +23,7 @@ class MoexApiClient extends GetConnect {
       var response = await get(url, query: params);
 
       if (response.statusCode != 200) {
-        showDefaultSnackbar(message: response.statusCode.toString(), title: 'error'.tr);
+        showDefaultSnackbar(message: 'check_connection_try_again'.tr, title: 'no_internet_connection'.tr);
         return [];
       }
 
@@ -53,7 +53,7 @@ class MoexApiClient extends GetConnect {
 
   Future<List<OhlcvModel>> getMoexAssetHistory({
     required SearchMoexModel asset,
-    required AssetHistoryInterval interval,
+    required AssetChartInterval interval,
   }) async {
     String url;
     Map<String, dynamic> params;
@@ -61,7 +61,7 @@ class MoexApiClient extends GetConnect {
     switch (asset.assetType) {
       case AssetType.stocks:
         SearchStockModel stock = asset as SearchStockModel;
-        interval as MoexAssetHistoryInterval;
+        interval as MoexAssetChartInterval;
 
         String sharesType = stock.stockPrimaryBoardId == StockPrimaryBoardId.tqbr ? 'shares' : 'foreignshares';
         int boardGroups = stock.stockPrimaryBoardId == StockPrimaryBoardId.tqbr ? 57 : 265;
@@ -128,7 +128,7 @@ class MoexApiClient extends GetConnect {
         var response = await get(url, query: params);
 
         if (response.statusCode != 200) {
-          showDefaultSnackbar(message: response.statusCode.toString(), title: 'error'.tr);
+          showDefaultSnackbar(message: 'check_connection_try_again'.tr, title: 'no_internet_connection'.tr);
           return null;
         }
         Map<String, dynamic> result = Map<String, dynamic>.from(json.decode(response.body));

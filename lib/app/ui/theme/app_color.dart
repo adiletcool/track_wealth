@@ -23,6 +23,7 @@ const Color greyColor2 = Color(0xff424242);
 const Color darkGreyColor = Color(0xff8a8a8a);
 const Color lightGreyColor = Color(0xffF5F5F5);
 const Color blueColor = Color(0xFF2A5BDD);
+const Color chartVolumeBlueColor = Color(0xff4A87B9);
 const Color inactiveButtonColor = Color(0xff574B90);
 const Color darkBackgroundColor = Color(0xff161817);
 
