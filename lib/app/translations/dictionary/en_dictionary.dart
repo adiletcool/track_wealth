@@ -51,6 +51,10 @@ final Map<String, String> en = {
   'profile': 'Profile',
 
   // asset page
+  'high': 'High',
+  'low': 'Low',
+  'open': 'Open',
+  'close': 'Close',
   'price': 'Price',
   'volume': 'Volume',
   'volume24h': 'Volume (24h)',
@@ -60,4 +64,5 @@ final Map<String, String> en = {
   '30d': '30d',
   '90d': '90d',
   '1Y': '1Y',
+  '5Y': '5Y',
 };

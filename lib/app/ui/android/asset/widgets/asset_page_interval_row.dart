@@ -36,9 +36,9 @@ class AssetPageIntervalRow extends GetView<AssetPageController> {
             children: intervals.map((i) {
               return AssetPageIntervalButton(
                 interval: i,
-                isSelected: controller.chartInterval.value == i,
+                isSelected: controller.chart.interval.value == i,
                 width: intervalWidth,
-                onTap: () => controller.setChartInterval(i),
+                onTap: () => controller.chart.setInterval(i),
               );
             }).toList(),
           )),

@@ -15,45 +15,9 @@ class AssetPageController extends GetxController {
   AssetModel asset = Get.arguments;
 
   RxBool isInitalLoaded = false.obs;
-  Rx<Future<void>> isChartLoading = Future<void>.value().obs;
 
-  late List<OhlcvModel> assetChart;
   late final MoexModelWithMarketData? mdAsset;
-
-  Rx<AssetChartInterval> chartInterval = MoexAssetChartInterval.M().obs;
-  RxBool trackballVisible = false.obs; // interaction with graph (long press)
-
-  RxInt trackballIndex = 0.obs;
-
-  String get trackballDate {
-    var ts = assetChart[trackballIndex.value].timestamp;
-    var dt = DateTime.fromMillisecondsSinceEpoch(ts);
-    return DateFormat.yMMMd(Get.deviceLocale?.languageCode).add_Hm().format(dt);
-  }
-
-  void setChartInterval(AssetChartInterval interval) {
-    chartInterval.value = interval;
-    isChartLoading.value = loadAssetChart();
-  }
-
-  void setTrackballVisibility(bool isVisible) => trackballVisible.value = isVisible;
-  void setTrackballIndex(int seriesIndex) => trackballIndex.value = seriesIndex;
-
-  Future<void> loadAssetChart() async {
-    /// Loads ohlcv series for chart
-    print('Loading initial asset history');
-
-    switch (asset.assetType) {
-      case AssetType.stocks:
-        assetChart = await assetRepository.getMoexAssetHistory(asset: asset as SearchMoexModel, interval: chartInterval.value);
-        print('Asset history loaded');
-        break;
-      case AssetType.bonds:
-      case AssetType.currencies:
-      case AssetType.crypto:
-        throw UnimplementedError();
-    }
-  }
+  late ChartController chart;
 
   Future<void> loadMdAsset() async {
     /// loads asset with market data: last price, day change, etc.
@@ -66,15 +30,86 @@ class AssetPageController extends GetxController {
       case AssetType.bonds:
       case AssetType.currencies:
       case AssetType.crypto:
-        throw UnimplementedError();
+        throw UnimplementedError(); // TODO
     }
   }
 
   @override
-  void onInit() {
-    isChartLoading.value = Future.wait([loadAssetChart(), loadMdAsset()]);
-    isChartLoading.value.then((_) => isInitalLoaded.value = true);
+  Future<void> onInit() async {
+    chart = ChartController(assetRepository, asset);
 
+    await Future.wait([chart.loadData(), loadMdAsset()]);
+    isInitalLoaded.value = true;
     super.onInit();
+  }
+}
+
+class ChartController {
+  final AssetRepository assetRepository;
+  final AssetModel asset;
+
+  ChartController(this.assetRepository, this.asset);
+
+  Rx<DateFormat> xAxisDateFormat = DateFormat.MMMd(Get.deviceLocale?.languageCode).obs;
+
+  late List<OhlcvModel> data;
+  Rx<Future<void>> isLoading = Future<void>.value().obs;
+  Rx<AssetChartInterval> interval = MoexAssetChartInterval.month().obs;
+
+  RxInt trackballIndex = 0.obs;
+  RxBool trackballVisible = false.obs; // interaction with graph (long press)
+
+  String get trackballDate {
+    var ts = data[trackballIndex.value].timestamp;
+    var dt = DateTime.fromMillisecondsSinceEpoch(ts);
+    return DateFormat.yMMMd(Get.deviceLocale?.languageCode).add_Hm().format(dt);
+  }
+
+  void setTrackballVisibility(bool isVisible) => trackballVisible.value = isVisible;
+  void setTrackballIndex(int seriesIndex) => trackballIndex.value = seriesIndex;
+
+  void setInterval(AssetChartInterval newInterval) {
+    if (interval.value == newInterval) return;
+
+    interval.value = newInterval;
+    isLoading.value = loadData();
+
+    // change xAxisDateFormat if period is large
+    switch (asset.assetType) {
+      case AssetType.stocks:
+        newInterval as MoexAssetChartInterval;
+        switch (newInterval.title) {
+          case '24h':
+            xAxisDateFormat.value = DateFormat.MMMd(Get.deviceLocale?.languageCode).add_Hm();
+            break;
+          case '5Y':
+            xAxisDateFormat.value = DateFormat.yMMMd(Get.deviceLocale?.languageCode);
+            break;
+          default:
+            xAxisDateFormat.value = DateFormat.MMMd(Get.deviceLocale?.languageCode);
+            break;
+        }
+        break;
+      case AssetType.bonds:
+      case AssetType.currencies:
+      case AssetType.crypto:
+        throw UnimplementedError(); // TODO
+    }
+  }
+
+  Future<void> loadData() async {
+    /// Loads ohlcv series for chart
+    print('Loading initial asset history');
+
+    switch (asset.assetType) {
+      case AssetType.stocks:
+        data = await assetRepository.getMoexAssetHistory(asset: asset as SearchMoexModel, interval: interval.value);
+        print('Asset history loaded');
+        break;
+      case AssetType.bonds:
+      case AssetType.currencies:
+      case AssetType.crypto:
+        throw UnimplementedError();
+    }
   }
 }

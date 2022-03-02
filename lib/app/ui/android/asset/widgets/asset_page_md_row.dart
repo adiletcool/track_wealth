@@ -18,6 +18,8 @@ class AssetPageMarketDataRow extends GetView<AssetPageController> {
     required num lastPrice,
     required num dayVolume,
     required num? marketCapitalization,
+    String? currencyLocale = 'ru',
+    String? currencySymbol = '₽',
   }) {
     bool isFalling = dayChangeNominal < 0;
     String changeSign = isFalling ? '-' : '+';
@@ -32,7 +34,7 @@ class AssetPageMarketDataRow extends GetView<AssetPageController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                lastPrice.currencyFormat(locale: 'ru', decimals: priceDecimals, symbol: '₽'),
+                lastPrice.currencyFormat(locale: currencyLocale, decimals: priceDecimals, symbol: currencySymbol),
                 style: Get.textTheme.headlineSmall,
               ),
               Container(
@@ -58,7 +60,7 @@ class AssetPageMarketDataRow extends GetView<AssetPageController> {
           Tooltip(
             showDuration: 5.seconds,
             triggerMode: TooltipTriggerMode.tap,
-            message: getStockTooltipMessage(dayVolume: dayVolume, marketCapitalization: marketCapitalization),
+            message: getStockTooltipMessage(dayVolume: dayVolume, marketCapitalization: marketCapitalization, symbol: currencySymbol),
             child: Icon(
               Icons.info_rounded,
               size: 28,
@@ -70,10 +72,10 @@ class AssetPageMarketDataRow extends GetView<AssetPageController> {
     );
   }
 
-  String getStockTooltipMessage({required num dayVolume, required num? marketCapitalization}) {
+  String getStockTooltipMessage({required num dayVolume, required num? marketCapitalization, String? symbol = ''}) {
     /// Daily volume and market capitalization
-    String info = 'volume24h'.tr + ': ' + dayVolume.compactFormat();
-    if (marketCapitalization != null) info += '\n' + 'capitalization'.tr + ': ' + marketCapitalization.compactFormat();
+    String info = 'volume24h'.tr + ': ' + dayVolume.compactFormat() + ' $symbol';
+    if (marketCapitalization != null) info += '\n' + 'capitalization'.tr + ': ' + marketCapitalization.compactFormat() + ' $symbol';
     return info;
   }
 

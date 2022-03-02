@@ -14,7 +14,7 @@ class AssetPageTrackballDate extends GetView<AssetPageController> {
               height: 26,
               margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 5),
               child: Center(
-                child: Text(controller.trackballDate),
+                child: Text(controller.chart.trackballDate),
               ),
             )),
       ],

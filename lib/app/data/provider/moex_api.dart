@@ -67,7 +67,7 @@ class MoexApiClient extends GetConnect {
         int boardGroups = stock.stockPrimaryBoardId == StockPrimaryBoardId.tqbr ? 57 : 265;
 
         url = "$base/cs/engines/stock/markets/$sharesType/boardgroups/$boardGroups/securities/${stock.secId}.hs";
-        params = {"s1.type": "candles", "interval": interval.qInt.toString(), "candles": interval.nCandles.toString()};
+        params = {"s1.type": "candles", "interval": interval.moexCandleTF.queryInterval.toString(), "candles": interval.nCandles.toString()};
         break;
 
       case AssetType.bonds:

@@ -51,13 +51,18 @@ final Map<String, String> ru = {
   'profile': 'Профиль',
 
   // asset page
+  'high': 'Макс',
+  'low': 'Мин',
+  'open': 'Откр',
+  'close': 'Закр',
   'price': 'Цена',
-  'volume': 'Объем',
-  'volume24h': 'Объем (24ч)',
+  'volume': 'Объём',
+  'volume24h': 'Объём (24ч)',
   'capitalization': 'Капитализация',
   '24h': '24ч',
   '7d': '7д',
   '30d': '30д',
   '90d': '90д',
   '1Y': '1Г',
+  '5Y': '5Л',
 };

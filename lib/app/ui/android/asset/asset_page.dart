@@ -62,7 +62,7 @@ class AssetPageIntervalSwitcher extends GetView<AssetPageController> {
           duration: 200.milliseconds,
           firstChild: const AssetPageIntervalRow(),
           secondChild: const AssetPageTrackballDate(),
-          crossFadeState: controller.trackballVisible.value ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+          crossFadeState: controller.chart.trackballVisible.value ? CrossFadeState.showSecond : CrossFadeState.showFirst,
         ));
   }
 }

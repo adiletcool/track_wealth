@@ -1,16 +1,25 @@
-# track_wealth
+# **Pet project with Flutter**
 
-A new Flutter project.
+## **Track Wealth**
 
-## Getting Started
+### Goal
+* Track portfolio performance
+* Ability to add assets of different markets:
+    * MoEx: Stocks, Bonds & Currencies
+    * Coinmarketcap: Crypto
+* Compare portfolio returns with market/indices
+* Track performance of public portfolios
+* Implement financial calendar (dividends, annual reports, etc.)
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+### UI
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+<p float="left">
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+#### search page
+<img src=assets/screenshots/search_page.png width=100%>
+
+#### asset page
+<img src=assets/screenshots/asset_page.png width=100%>
+
+</p>

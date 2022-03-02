@@ -1,13 +1,14 @@
 import 'dart:math' as math;
+import 'package:intl/intl.dart';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../../../controllers/asset/asset_page_controller.dart';
 import '../../../../data/model/asset_chart/ohlcv_model.dart';
+import '../../../../utils/formatters.dart';
 import '../../../theme/app_color.dart';
 import '../../widgets/loading_widget.dart';
 
@@ -58,7 +59,7 @@ class AssetPageHistoryChart extends GetView<AssetPageController> {
   @override
   Widget build(BuildContext context) {
     return Obx(() => FutureBuilder(
-          future: controller.isChartLoading.value,
+          future: controller.chart.isLoading.value,
           builder: (context, AsyncSnapshot<void> snapshot) {
             if ((snapshot.connectionState == ConnectionState.waiting)) {
               return const SizedBox(
@@ -67,7 +68,7 @@ class AssetPageHistoryChart extends GetView<AssetPageController> {
               );
             }
             return FutureBuilder(
-              future: _getCandleSeries(controller.assetChart),
+              future: _getCandleSeries(controller.chart.data),
               builder: (context, AsyncSnapshot<List<CartesianSeries<OhlcvModel, DateTime>>> snapshot) {
                 if ((snapshot.connectionState == ConnectionState.waiting) || !snapshot.hasData) {
                   return const SizedBox(
@@ -76,11 +77,11 @@ class AssetPageHistoryChart extends GetView<AssetPageController> {
                   );
                 }
                 return SfCartesianChart(
-                  onChartTouchInteractionDown: (_) => controller.setTrackballVisibility(true),
-                  onChartTouchInteractionUp: (_) => controller.setTrackballVisibility(false),
+                  onChartTouchInteractionDown: (_) => controller.chart.setTrackballVisibility(true),
+                  onChartTouchInteractionUp: (_) => controller.chart.setTrackballVisibility(false),
                   onTrackballPositionChanging: (TrackballArgs args) {
                     int? index = args.chartPointInfo.dataPointIndex;
-                    if (index != null) controller.setTrackballIndex(index);
+                    if (index != null) controller.chart.setTrackballIndex(index);
                   },
                   trackballBehavior: TrackballBehavior(
                     enable: true,
@@ -88,10 +89,8 @@ class AssetPageHistoryChart extends GetView<AssetPageController> {
                     lineDashArray: const [5, 5],
                     lineColor: Colors.grey.shade500,
                     tooltipDisplayMode: TrackballDisplayMode.groupAllPoints,
-                    // builder: (BuildContext context, TrackballDetails details) {details.groupingModeInfo}
-                    // builder: (BuildContext context, TrackballDetails details) {
-                    //   return TrackballTooltip(details);
-                    // },
+                    builder: (BuildContext context, TrackballDetails trackballDetails) =>
+                        TrackballTooltip(trackballDetails, controller.chart.xAxisDateFormat.value),
                   ),
                   series: snapshot.data,
                   plotAreaBorderWidth: 0,
@@ -101,7 +100,7 @@ class AssetPageHistoryChart extends GetView<AssetPageController> {
                     NumericAxis(
                       name: 'volume',
                       isVisible: false,
-                      maximum: controller.assetChart.map((i) => i.volume).reduce(math.max).toDouble() * 5,
+                      maximum: controller.chart.data.map((i) => i.volume).reduce(math.max).toDouble() * 5,
                     ),
                   ],
                   primaryXAxis: DateTimeCategoryAxis(
@@ -112,7 +111,7 @@ class AssetPageHistoryChart extends GetView<AssetPageController> {
                     tickPosition: TickPosition.inside,
                     majorGridLines: const MajorGridLines(width: 0),
                     opposedPosition: true,
-                    dateFormat: DateFormat.MMMd(Get.deviceLocale?.languageCode),
+                    dateFormat: controller.chart.xAxisDateFormat.value,
                   ),
                   primaryYAxis: NumericAxis(
                     name: 'price',
@@ -134,41 +133,64 @@ class AssetPageHistoryChart extends GetView<AssetPageController> {
   }
 }
 
-class TrackballTooltip extends GetView<AssetPageController> {
+class TrackballTooltip extends StatelessWidget {
   final TrackballDetails details;
-  const TrackballTooltip(this.details, {Key? key}) : super(key: key);
+  final DateFormat dateFormat;
+  const TrackballTooltip(this.details, this.dateFormat, {Key? key}) : super(key: key);
 
-  int? get _index => details.pointIndex;
-  bool get isFalling {
-    return _index == 0 ? false : controller.assetChart[_index!].close > controller.assetChart[_index! - 1].close;
-  }
+  CartesianChartPoint? get candle => details.groupingModeInfo?.points[0];
+  CartesianChartPoint? get volume => details.groupingModeInfo?.points[1];
 
-  Color get _color => isFalling ? redBrightColor : greenBrightColor;
+  bool get isFalling => candle?.close > candle?.open;
+
+  Color get _color => isFalling ? greenBrightColor : redBrightColor;
 
   @override
   Widget build(BuildContext context) {
-    if (_index == null) return Container();
-
-    return Center(
-      child: Row(
-        children: [
-          Container(
-            width: 5,
-            height: 5,
-            decoration: BoxDecoration(
-              color: _color,
-              shape: BoxShape.circle,
+    if (candle == null) return Container();
+    return IntrinsicWidth(
+      child: IntrinsicHeight(
+        child: Container(
+          padding: const EdgeInsets.all(5),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            backgroundBlendMode: BlendMode.darken,
+            color: Colors.black.withOpacity(.7),
+            // shape: BoxShape.circle,
+          ),
+          child: Center(
+            child: Row(
+              children: [
+                Container(width: 8, decoration: BoxDecoration(color: _color, shape: BoxShape.circle)),
+                const SizedBox(width: 10),
+                Text(
+                  dateFormat.format(candle!.x) +
+                      '\n\n' +
+                      'high'.tr +
+                      ' : ' +
+                      candle!.high.toString() +
+                      '\n' +
+                      'low'.tr +
+                      ' : ' +
+                      candle!.low.toString() +
+                      '\n' +
+                      'open'.tr +
+                      ' : ' +
+                      candle!.open.toString() +
+                      '\n' +
+                      'close'.tr +
+                      ' : ' +
+                      candle!.close.toString() +
+                      '\n' +
+                      'volume'.tr +
+                      ' : ' +
+                      (volume!.yValue as double).compactFormat(),
+                  style: const TextStyle(fontSize: 12),
+                ),
+              ],
             ),
           ),
-          Column(
-            children: [
-              Text('high'.tr + ': ' + controller.assetChart[_index!].high.toString()),
-              Text('low'.tr + ': ' + controller.assetChart[_index!].low.toString()),
-              Text('open'.tr + ': ' + controller.assetChart[_index!].open.toString()),
-              Text('close'.tr + ': ' + controller.assetChart[_index!].close.toString()),
-            ],
-          ),
-        ],
+        ),
       ),
     );
   }
