@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import '../../../../enums/common_currencies.dart';
 import '../../../../enums/market_types.dart';
-import '../../../asset/stock_model.dart';
+import '../../../asset/moex/stock_model.dart';
 import '../../trade/trade_operation_data.dart';
 
 class StockTradeOperationData extends TradeOperationData {

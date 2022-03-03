@@ -1,5 +1,8 @@
-import '../../enums/market_types.dart';
-import 'asset_model.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+
+import '../../../enums/market_types.dart';
+import '../asset_model.dart';
 
 class SearchCoinmarketcapModel implements AssetModel {
   final int id;
@@ -44,4 +47,11 @@ class SearchCoinmarketcapModel implements AssetModel {
       return SearchCoinmarketcapModel.fromMap(m);
     }).toList();
   }
+}
+
+class CoinmarketcapModelWithMarketData extends SearchCoinmarketcapModel implements AssetModelWithMarketData {
+  CoinmarketcapModelWithMarketData.fromMap(Map<String, dynamic> map) : super.fromMap(map);
+
+  @override
+  String get updateTime => DateFormat.yMMMd(Get.deviceLocale?.languageCode).add_Hms().format(DateTime.now());
 }

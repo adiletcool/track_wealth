@@ -31,7 +31,7 @@ class AssetPageAppBar extends GetView<AssetPageController> {
         subtitle: Text(controller.asset.subtitle),
       ),
       centerTitle: false,
-      backgroundColor: Get.theme.scaffoldBackgroundColor,
+      backgroundColor: context.theme.scaffoldBackgroundColor,
       actions: [
         Container(
           padding: const EdgeInsets.only(left: 10),

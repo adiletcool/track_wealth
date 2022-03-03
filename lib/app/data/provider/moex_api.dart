@@ -4,10 +4,10 @@ import 'package:get/get.dart';
 
 import '../../constants/show_snackbars.dart';
 import '../enums/market_types.dart';
-import '../model/asset/asset_model.dart';
-import '../model/asset/bond_model.dart';
-import '../model/asset/currency_model.dart';
-import '../model/asset/stock_model.dart';
+import '../model/asset/moex/bond_model.dart';
+import '../model/asset/moex/currency_model.dart';
+import '../model/asset/moex/moex_model.dart';
+import '../model/asset/moex/stock_model.dart';
 import '../model/asset_chart/asset_chart_interval.dart';
 import '../model/asset_chart/ohlcv_model.dart';
 

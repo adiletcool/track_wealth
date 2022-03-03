@@ -10,7 +10,7 @@ import 'package:syncfusion_localizations/syncfusion_localizations.dart';
 import 'app/controllers/auth/auth_controller.dart';
 import 'app/routes/app_pages.dart';
 import 'app/translations/add_translations.dart';
-import 'app/ui/android/widgets/loading_widget.dart';
+import 'app/ui/mobile/widgets/loading_widget.dart';
 import 'app/ui/theme/app_theme.dart';
 import 'firebase_options.dart';
 

@@ -1,5 +1,5 @@
-import '../../enums/market_types.dart';
-import 'asset_model.dart';
+import '../../../enums/market_types.dart';
+import 'moex_model.dart';
 
 enum StockPrimaryBoardId { tqbr, fqbr }
 
@@ -29,7 +29,6 @@ class StockModelWithMarketData extends MoexModelWithMarketData {
 
   final int lotSize;
 
-  final String updateTime;
   final num? marketCapitalization;
   final num dayVolume;
 
@@ -45,7 +44,6 @@ class StockModelWithMarketData extends MoexModelWithMarketData {
         dayChangeNominal = map['CHANGE'] ?? 0,
         priceDecimals = map['DECIMALS'],
         lotSize = map['LOTSIZE'],
-        updateTime = map['UPDATETIME'],
         marketCapitalization = map['ISSUECAPITALIZATION'],
         dayVolume = map['VALTODAY'],
         super.fromMap(map);

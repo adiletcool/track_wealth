@@ -1,5 +1,5 @@
-import '../../enums/market_types.dart';
-import 'asset_model.dart';
+import '../../../enums/market_types.dart';
+import 'moex_model.dart';
 
 class SearchCurrencyModel extends SearchMoexModel {
   SearchCurrencyModel.fromMap(Map<String, dynamic> map) : super.fromMap(map);
@@ -15,4 +15,14 @@ class SearchCurrencyModel extends SearchMoexModel {
       return SearchCurrencyModel.fromMap(m);
     }).toList();
   }
+}
+
+class CurrencyModelWithMarketData extends MoexModelWithMarketData {
+  CurrencyModelWithMarketData.fromMap(Map<String, dynamic> map) : super.fromMap(map);
+
+  @override
+  AssetType get assetType => AssetType.currencies;
+
+  @override
+  String? get imageUrl => null;
 }

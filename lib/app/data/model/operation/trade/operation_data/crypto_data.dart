@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import '../../../../enums/market_types.dart';
-import '../../../asset/crypto_model.dart';
+import '../../../asset/coinmarketcap/coinmarketcap_model.dart';
 import '../../trade/trade_operation_data.dart';
 
 class CryptoTradeOperationData extends TradeOperationData {

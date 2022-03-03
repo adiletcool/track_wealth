@@ -65,4 +65,6 @@ final Map<String, String> en = {
   '90d': '90d',
   '1Y': '1Y',
   '5Y': '5Y',
+  'add_operation': 'Add operation',
+  'upd.': 'Upd.',
 };

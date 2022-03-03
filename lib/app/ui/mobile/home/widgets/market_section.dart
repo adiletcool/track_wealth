@@ -3,7 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../../data/model/asset/stock_model.dart';
+import '../../../../data/model/asset/moex/stock_model.dart';
 import '../../../../utils/formatters.dart';
 import '../../widgets/circle_avatar_placeholder.dart';
 

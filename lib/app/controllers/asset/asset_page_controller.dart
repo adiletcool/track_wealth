@@ -1,8 +1,11 @@
+import 'dart:math' as math;
+
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../../data/enums/market_types.dart';
 import '../../data/model/asset/asset_model.dart';
+import '../../data/model/asset/moex/moex_model.dart';
 import '../../data/model/asset_chart/asset_chart_interval.dart';
 import '../../data/model/asset_chart/ohlcv_model.dart';
 import '../../data/repository/asset_repository.dart';
@@ -16,7 +19,7 @@ class AssetPageController extends GetxController {
 
   RxBool isInitalLoaded = false.obs;
 
-  late final MoexModelWithMarketData? mdAsset;
+  late final AssetModelWithMarketData? mdAsset;
   late ChartController chart;
 
   Future<void> loadMdAsset() async {
@@ -55,6 +58,8 @@ class ChartController {
   late List<OhlcvModel> data;
   Rx<Future<void>> isLoading = Future<void>.value().obs;
   Rx<AssetChartInterval> interval = MoexAssetChartInterval.month().obs;
+
+  double get maxVolume => data.map((i) => i.volume).reduce(math.max).toDouble();
 
   RxInt trackballIndex = 0.obs;
   RxBool trackballVisible = false.obs; // interaction with graph (long press)

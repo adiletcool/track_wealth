@@ -1,5 +1,5 @@
-import '../model/asset/asset_model.dart';
-import '../model/asset/crypto_model.dart';
+import '../model/asset/coinmarketcap/coinmarketcap_model.dart';
+import '../model/asset/moex/moex_model.dart';
 import '../model/asset_chart/asset_chart_interval.dart';
 import '../model/asset_chart/ohlcv_model.dart';
 import '../provider/coinmarketcap_api.dart';

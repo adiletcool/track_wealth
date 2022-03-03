@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 import '../../../../controllers/asset/asset_page_controller.dart';
 import '../../../../data/enums/market_types.dart';
-import '../../../../data/model/asset/stock_model.dart';
+import '../../../../data/model/asset/moex/stock_model.dart';
 import '../../../../utils/formatters.dart';
 import '../../../theme/app_color.dart';
 
@@ -20,6 +20,7 @@ class AssetPageMarketDataRow extends GetView<AssetPageController> {
     required num? marketCapitalization,
     String? currencyLocale = 'ru',
     String? currencySymbol = '₽',
+    String marketName = 'MOEX',
   }) {
     bool isFalling = dayChangeNominal < 0;
     String changeSign = isFalling ? '-' : '+';
@@ -35,7 +36,7 @@ class AssetPageMarketDataRow extends GetView<AssetPageController> {
             children: [
               Text(
                 lastPrice.currencyFormat(locale: currencyLocale, decimals: priceDecimals, symbol: currencySymbol),
-                style: Get.textTheme.headlineSmall,
+                style: context.textTheme.headlineSmall,
               ),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -57,26 +58,10 @@ class AssetPageMarketDataRow extends GetView<AssetPageController> {
               ),
             ],
           ),
-          Tooltip(
-            showDuration: 5.seconds,
-            triggerMode: TooltipTriggerMode.tap,
-            message: getStockTooltipMessage(dayVolume: dayVolume, marketCapitalization: marketCapitalization, symbol: currencySymbol),
-            child: Icon(
-              Icons.info_rounded,
-              size: 28,
-              color: ThemeBasedColor(context, Colors.black, Colors.white),
-            ),
-          ),
+          Text(marketName, style: TextStyle(fontSize: 18, color: context.textTheme.bodyText1?.color?.withOpacity(0.8))),
         ],
       ),
     );
-  }
-
-  String getStockTooltipMessage({required num dayVolume, required num? marketCapitalization, String? symbol = ''}) {
-    /// Daily volume and market capitalization
-    String info = 'volume24h'.tr + ': ' + dayVolume.compactFormat() + ' $symbol';
-    if (marketCapitalization != null) info += '\n' + 'capitalization'.tr + ': ' + marketCapitalization.compactFormat() + ' $symbol';
-    return info;
   }
 
   @override

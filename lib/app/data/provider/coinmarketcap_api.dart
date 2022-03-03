@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
 import '../../constants/show_snackbars.dart';
-import '../model/asset/crypto_model.dart';
+import '../model/asset/coinmarketcap/coinmarketcap_model.dart';
 
 class CoinmarketcapApiClient extends GetConnect {
   Future<List<SearchCoinmarketcapModel>> getCoinmarketcapAssets() async {

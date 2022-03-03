@@ -70,7 +70,7 @@ class AssetPageIntervalButton extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 4),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(7),
-          color: isSelected ? (ThemeBasedColor(context, Get.theme.colorScheme.primary, Colors.yellow)).withOpacity(.5) : null,
+          color: isSelected ? (ThemeBasedColor(context, context.theme.colorScheme.primary, Colors.yellow)).withOpacity(.5) : null,
         ),
         child: Text(
           interval.title.tr,

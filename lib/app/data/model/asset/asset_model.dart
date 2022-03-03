@@ -14,35 +14,8 @@ abstract class AssetModel {
   });
 }
 
-abstract class SearchMoexModel implements AssetModel {
-  final String? isin;
-  final String primaryBoardId;
-  final String secId;
-  final String shortName;
-  final String name;
+abstract class AssetModelWithMarketData implements AssetModel {
+  final String updateTime;
 
-  @override
-  String get subtitle => secId;
-
-  @override
-  String get displayName => shortName;
-
-  SearchMoexModel.fromMap(Map<String, dynamic> map)
-      : isin = map['isin'] ?? map['ISIN'],
-        primaryBoardId = map['primary_boardid'] ?? map['BOARDID'],
-        secId = map['secid'] ?? map['SECID'],
-        shortName = map['shortname'] ?? map['SHORTNAME'],
-        name = map['name'] ?? map['SECNAME'];
-
-  Map<String, dynamic> toMap() => {
-        "isin": isin,
-        "primary_boardid": primaryBoardId,
-        "secid": secId,
-        "shortname": shortName,
-        "name": name,
-      };
-}
-
-abstract class MoexModelWithMarketData extends SearchMoexModel {
-  MoexModelWithMarketData.fromMap(Map<String, dynamic> map) : super.fromMap(map);
+  AssetModelWithMarketData(this.updateTime);
 }

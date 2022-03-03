@@ -65,4 +65,6 @@ final Map<String, String> ru = {
   '90d': '90д',
   '1Y': '1Г',
   '5Y': '5Л',
+  'add_operation': 'Добавить сделку',
+  'upd.': 'Обн.',
 };

@@ -1,4 +1,3 @@
-import 'dart:math' as math;
 import 'package:intl/intl.dart';
 
 import 'package:flutter/foundation.dart';
@@ -49,8 +48,8 @@ List<CartesianSeries<OhlcvModel, DateTime>> _computeCandleSeries(ComputeCandleSe
   ];
 }
 
-class AssetPageHistoryChart extends GetView<AssetPageController> {
-  const AssetPageHistoryChart({Key? key}) : super(key: key);
+class AssetPageChart extends GetView<AssetPageController> {
+  const AssetPageChart({Key? key}) : super(key: key);
 
   Future<List<CartesianSeries<OhlcvModel, DateTime>>> _getCandleSeries(List<OhlcvModel> assetHistory) async {
     return await compute(_computeCandleSeries, ComputeCandleSeriesParams(assetHistory, 'price'.tr, 'volume'.tr));
@@ -58,78 +57,76 @@ class AssetPageHistoryChart extends GetView<AssetPageController> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => FutureBuilder(
-          future: controller.chart.isLoading.value,
-          builder: (context, AsyncSnapshot<void> snapshot) {
-            if ((snapshot.connectionState == ConnectionState.waiting)) {
-              return const SizedBox(
-                child: LoadingWidget(),
-                height: 200,
-              );
-            }
-            return FutureBuilder(
-              future: _getCandleSeries(controller.chart.data),
-              builder: (context, AsyncSnapshot<List<CartesianSeries<OhlcvModel, DateTime>>> snapshot) {
-                if ((snapshot.connectionState == ConnectionState.waiting) || !snapshot.hasData) {
-                  return const SizedBox(
-                    child: LoadingWidget(),
-                    height: 200,
-                  );
-                }
-                return SfCartesianChart(
-                  onChartTouchInteractionDown: (_) => controller.chart.setTrackballVisibility(true),
-                  onChartTouchInteractionUp: (_) => controller.chart.setTrackballVisibility(false),
-                  onTrackballPositionChanging: (TrackballArgs args) {
-                    int? index = args.chartPointInfo.dataPointIndex;
-                    if (index != null) controller.chart.setTrackballIndex(index);
-                  },
-                  trackballBehavior: TrackballBehavior(
-                    enable: true,
-                    activationMode: ActivationMode.singleTap,
-                    lineDashArray: const [5, 5],
-                    lineColor: Colors.grey.shade500,
-                    tooltipDisplayMode: TrackballDisplayMode.groupAllPoints,
-                    builder: (BuildContext context, TrackballDetails trackballDetails) =>
-                        TrackballTooltip(trackballDetails, controller.chart.xAxisDateFormat.value),
-                  ),
-                  series: snapshot.data,
-                  plotAreaBorderWidth: 0,
-                  borderWidth: 0,
-                  margin: const EdgeInsets.only(left: 10),
-                  axes: [
-                    NumericAxis(
-                      name: 'volume',
-                      isVisible: false,
-                      maximum: controller.chart.data.map((i) => i.volume).reduce(math.max).toDouble() * 5,
+    // return Container(color: Colors.red, height: 300);
+    return SizedBox(
+      height: 300,
+      child: Obx(() => FutureBuilder(
+            future: controller.chart.isLoading.value,
+            builder: (context, AsyncSnapshot<void> snapshot) {
+              if ((snapshot.connectionState == ConnectionState.waiting)) {
+                return const LoadingWidget();
+              }
+              return FutureBuilder(
+                future: _getCandleSeries(controller.chart.data),
+                builder: (context, AsyncSnapshot<List<CartesianSeries<OhlcvModel, DateTime>>> snapshot) {
+                  if ((snapshot.connectionState == ConnectionState.waiting) || !snapshot.hasData) {
+                    return const LoadingWidget();
+                  }
+                  return SfCartesianChart(
+                    onChartTouchInteractionDown: (_) => controller.chart.setTrackballVisibility(true),
+                    onChartTouchInteractionUp: (_) => controller.chart.setTrackballVisibility(false),
+                    onTrackballPositionChanging: (TrackballArgs args) {
+                      int? index = args.chartPointInfo.dataPointIndex;
+                      if (index != null) controller.chart.setTrackballIndex(index);
+                    },
+                    trackballBehavior: TrackballBehavior(
+                      enable: true,
+                      activationMode: ActivationMode.singleTap,
+                      lineDashArray: const [5, 5],
+                      lineColor: Colors.grey.shade500,
+                      tooltipDisplayMode: TrackballDisplayMode.groupAllPoints,
+                      builder: (BuildContext context, TrackballDetails trackballDetails) =>
+                          TrackballTooltip(trackballDetails, controller.chart.xAxisDateFormat.value),
                     ),
-                  ],
-                  primaryXAxis: DateTimeCategoryAxis(
-                    rangePadding: ChartRangePadding.none,
-                    desiredIntervals: 4,
-                    labelPosition: ChartDataLabelPosition.inside,
-                    majorTickLines: const MajorTickLines(width: 0),
-                    tickPosition: TickPosition.inside,
-                    majorGridLines: const MajorGridLines(width: 0),
-                    opposedPosition: true,
-                    dateFormat: controller.chart.xAxisDateFormat.value,
-                  ),
-                  primaryYAxis: NumericAxis(
-                    name: 'price',
-                    axisLine: const AxisLine(width: 0),
-                    edgeLabelPlacement: EdgeLabelPlacement.hide,
-                    tickPosition: TickPosition.inside,
-                    majorTickLines: const MajorTickLines(width: 0),
-                    minorTickLines: const MinorTickLines(width: 0),
-                    opposedPosition: true,
-                    rangePadding: ChartRangePadding.round,
-                    // minimum: (assetHistory.map((e) => e.low).reduce(math.min) * 0.85).toPrecision(1),
-                    // maximum: (assetHistory.map((e) => e.low).reduce(math.max) * 1.15).toPrecision(1),
-                  ),
-                );
-              },
-            );
-          },
-        ));
+                    series: snapshot.data,
+                    plotAreaBorderWidth: 0,
+                    borderWidth: 0,
+                    margin: const EdgeInsets.only(left: 10),
+                    axes: [
+                      NumericAxis(
+                        name: 'volume',
+                        isVisible: false,
+                        maximum: controller.chart.maxVolume * 5,
+                      ),
+                    ],
+                    primaryXAxis: DateTimeCategoryAxis(
+                      rangePadding: ChartRangePadding.none,
+                      desiredIntervals: 4,
+                      labelPosition: ChartDataLabelPosition.inside,
+                      majorTickLines: const MajorTickLines(width: 0),
+                      tickPosition: TickPosition.inside,
+                      majorGridLines: const MajorGridLines(width: 0),
+                      opposedPosition: true,
+                      dateFormat: controller.chart.xAxisDateFormat.value,
+                    ),
+                    primaryYAxis: NumericAxis(
+                      name: 'price',
+                      axisLine: const AxisLine(width: 0),
+                      edgeLabelPlacement: EdgeLabelPlacement.hide,
+                      tickPosition: TickPosition.inside,
+                      majorTickLines: const MajorTickLines(width: 0),
+                      minorTickLines: const MinorTickLines(width: 0),
+                      opposedPosition: true,
+                      rangePadding: ChartRangePadding.round,
+                      // minimum: (assetHistory.map((e) => e.low).reduce(math.min) * 0.85).toPrecision(1),
+                      // maximum: (assetHistory.map((e) => e.low).reduce(math.max) * 1.15).toPrecision(1),
+                    ),
+                  );
+                },
+              );
+            },
+          )),
+    );
   }
 }
 
@@ -155,7 +152,7 @@ class TrackballTooltip extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
             backgroundBlendMode: BlendMode.darken,
-            color: Colors.black.withOpacity(.7),
+            color: ThemeBasedColor(context, Colors.grey.shade800, Colors.black).withOpacity(.7),
             // shape: BoxShape.circle,
           ),
           child: Center(
@@ -184,8 +181,8 @@ class TrackballTooltip extends StatelessWidget {
                       '\n' +
                       'volume'.tr +
                       ' : ' +
-                      (volume!.yValue as double).compactFormat(),
-                  style: const TextStyle(fontSize: 12),
+                      double.parse(volume!.yValue.toString()).compactFormat(),
+                  style: const TextStyle(fontSize: 12, color: Colors.white),
                 ),
               ],
             ),
