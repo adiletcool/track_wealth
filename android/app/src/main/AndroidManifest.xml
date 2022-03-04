@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.adiletcool.track_wealth">
    <application
-        android:label="track_wealth"
+        android:label="TrackWealth"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

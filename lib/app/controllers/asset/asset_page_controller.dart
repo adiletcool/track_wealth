@@ -69,6 +69,7 @@ class ChartController {
 
   String get trackballDate {
     var ts = data[trackballIndex.value].timestamp;
+    // TODO: fix 3 hours difference
     var dt = DateTime.fromMillisecondsSinceEpoch(ts, isUtc: true);
     return DateFormat.yMMMd(Get.deviceLocale?.languageCode).add_Hm().format(dt);
   }
