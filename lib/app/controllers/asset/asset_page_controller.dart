@@ -10,6 +10,8 @@ import '../../data/model/asset_chart/asset_chart_interval.dart';
 import '../../data/model/asset_chart/ohlcv_model.dart';
 import '../../data/repository/asset_repository.dart';
 
+enum ChartType { candlestick, line }
+
 class AssetPageController extends GetxController {
   final AssetRepository assetRepository;
 
@@ -58,6 +60,7 @@ class ChartController {
   late List<OhlcvModel> data;
   Rx<Future<void>> isLoading = Future<void>.value().obs;
   Rx<AssetChartInterval> interval = MoexAssetChartInterval.month().obs;
+  Rx<ChartType> type = ChartType.candlestick.obs;
 
   double get maxVolume => data.map((i) => i.volume).reduce(math.max).toDouble();
 
@@ -66,12 +69,13 @@ class ChartController {
 
   String get trackballDate {
     var ts = data[trackballIndex.value].timestamp;
-    var dt = DateTime.fromMillisecondsSinceEpoch(ts);
+    var dt = DateTime.fromMillisecondsSinceEpoch(ts, isUtc: true);
     return DateFormat.yMMMd(Get.deviceLocale?.languageCode).add_Hm().format(dt);
   }
 
   void setTrackballVisibility(bool isVisible) => trackballVisible.value = isVisible;
   void setTrackballIndex(int seriesIndex) => trackballIndex.value = seriesIndex;
+  void changeType() => type.value = type.value == ChartType.line ? ChartType.candlestick : ChartType.line;
 
   void setInterval(AssetChartInterval newInterval) {
     if (interval.value == newInterval) return;

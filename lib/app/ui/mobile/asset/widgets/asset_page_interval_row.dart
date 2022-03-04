@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 import '../../../../controllers/asset/asset_page_controller.dart';
@@ -24,24 +25,42 @@ class AssetPageIntervalRow extends GetView<AssetPageController> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 26,
-      margin: const EdgeInsets.symmetric(vertical: 8),
-      decoration: BoxDecoration(
-        color: ThemeBasedColor(context, greyColor, greyColor2).withOpacity(.4),
-        borderRadius: BorderRadius.circular(15),
-      ),
-      child: Obx(() => Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: intervals.map((i) {
-              return AssetPageIntervalButton(
-                interval: i,
-                isSelected: controller.chart.interval.value == i,
-                width: intervalWidth,
-                onTap: () => controller.chart.setInterval(i),
-              );
-            }).toList(),
-          )),
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Flexible(
+          child: Container(
+            height: 26,
+            margin: const EdgeInsets.symmetric(vertical: 8),
+            decoration: BoxDecoration(
+              color: ThemeBasedColor(context, greyColor, greyColor2).withOpacity(.4),
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: Obx(() => Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: intervals.map((i) {
+                    return AssetPageIntervalButton(
+                      interval: i,
+                      isSelected: controller.chart.interval.value == i,
+                      width: intervalWidth,
+                      onTap: () => controller.chart.setInterval(i),
+                    );
+                  }).toList(),
+                )),
+          ),
+        ),
+        SizedBox(
+          height: 26 + 16,
+          child: Obx(() => IconButton(
+                splashRadius: 20,
+                onPressed: controller.chart.changeType,
+                icon: controller.chart.type.value == ChartType.candlestick
+                    ? SvgPicture.asset('assets/icons/candlestick_chart.svg', color: context.theme.iconTheme.color)
+                    : const Icon(Icons.timeline_rounded),
+              )),
+        ),
+      ],
     );
   }
 }

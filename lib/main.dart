@@ -40,6 +40,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      title: 'TrackWealth',
       // Theming
       theme: lightThemeData,
       themeMode: ThemeMode.system,

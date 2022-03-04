@@ -97,7 +97,7 @@ class EmailAuthController {
   Rx<FocusNode> emailFocusNode = FocusNode().obs;
   Rx<FocusNode> passwordFocusNode = FocusNode().obs;
 
-  String get email => emailController.value.text;
+  String get email => emailController.value.text.trim();
   String get password => passwordController.value.text;
 
   RxBool showPassword = false.obs;

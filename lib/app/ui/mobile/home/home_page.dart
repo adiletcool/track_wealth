@@ -23,10 +23,10 @@ class HomePageBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SliverPadding(
-      padding: EdgeInsets.all(8.0),
-      sliver: SliverFillRemaining(
-        hasScrollBody: false,
+    return const SliverFillRemaining(
+      hasScrollBody: false,
+      child: Padding(
+        padding: EdgeInsets.all(8.0),
         child: Center(
           child: Text('Home'),
         ),
