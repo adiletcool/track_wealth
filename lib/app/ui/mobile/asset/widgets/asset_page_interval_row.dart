@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:track_wealth/app/data/model/asset_chart/coinmarketcap_chart_interval.dart';
 
 import '../../../../controllers/asset/asset_page_controller.dart';
 import '../../../../data/enums/market_types.dart';
 import '../../../../data/model/asset_chart/asset_chart_interval.dart';
+import '../../../../data/model/asset_chart/moex_chart_interval.dart';
 import '../../../theme/app_color.dart';
 
 class AssetPageIntervalRow extends GetView<AssetPageController> {
@@ -13,7 +15,11 @@ class AssetPageIntervalRow extends GetView<AssetPageController> {
   List<AssetChartInterval> get intervals {
     switch (controller.asset.assetType) {
       case AssetType.stocks:
-        return MoexAssetChartInterval.all();
+        return MoexChartInterval.all();
+
+      case AssetType.crypto:
+        return CoinmarketcapChartInterval.all();
+
       default:
         throw UnimplementedError();
     }

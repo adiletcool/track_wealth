@@ -15,6 +15,8 @@ abstract class AssetModel {
 }
 
 abstract class AssetModelWithMarketData implements AssetModel {
+  int get priceDecimals;
+
   final String updateTime;
 
   AssetModelWithMarketData(this.updateTime);

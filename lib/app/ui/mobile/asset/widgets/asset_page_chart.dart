@@ -95,9 +95,8 @@ class AssetPageChart extends GetView<AssetPageController> {
       child: Obx(() => FutureBuilder(
             future: controller.chart.isLoading.value,
             builder: (context, AsyncSnapshot<void> snapshot) {
-              if ((snapshot.connectionState == ConnectionState.waiting)) {
-                return const LoadingWidget();
-              }
+              if ((snapshot.connectionState == ConnectionState.waiting) || controller.chart.data.isEmpty) return const LoadingWidget();
+
               return Obx(() => FutureBuilder(
                     future: _getCandleSeries(context, controller.chart.data, controller.chart.type.value),
                     builder: (context, AsyncSnapshot<List<CartesianSeries<OhlcvModel, DateTime>>> snapshot) {
@@ -117,8 +116,12 @@ class AssetPageChart extends GetView<AssetPageController> {
                           lineDashArray: const [5, 5],
                           lineColor: Colors.grey.shade500,
                           tooltipDisplayMode: TrackballDisplayMode.groupAllPoints,
-                          builder: (BuildContext context, TrackballDetails trackballDetails) =>
-                              TrackballTooltip(trackballDetails, controller.chart.xAxisDateFormat.value, controller.chart.type.value),
+                          builder: (BuildContext context, TrackballDetails trackballDetails) => TrackballTooltip(
+                            details: trackballDetails,
+                            dateFormat: controller.chart.xAxisDateFormat.value,
+                            chartType: controller.chart.type.value,
+                            decimals: controller.mdAsset!.priceDecimals,
+                          ),
                         ),
                         series: snapshot.data,
                         plotAreaBorderWidth: 0,
@@ -166,7 +169,15 @@ class TrackballTooltip extends StatelessWidget {
   final TrackballDetails details;
   final DateFormat dateFormat;
   final ChartType chartType;
-  const TrackballTooltip(this.details, this.dateFormat, this.chartType, {Key? key}) : super(key: key);
+  final int decimals;
+
+  const TrackballTooltip({
+    required this.details,
+    required this.dateFormat,
+    required this.chartType,
+    required this.decimals,
+    Key? key,
+  }) : super(key: key);
 
   CartesianChartPoint? get data => details.groupingModeInfo?.points[0];
   CartesianChartPoint? get volume => details.groupingModeInfo?.points[1];
@@ -182,20 +193,20 @@ class TrackballTooltip extends StatelessWidget {
         (isCandle
             ? 'high'.tr +
                 ' : ' +
-                data!.high.toString() +
+                data!.high.toStringAsFixed(decimals).toString() +
                 '\n' +
                 'low'.tr +
                 ' : ' +
-                data!.low.toString() +
+                data!.low.toStringAsFixed(decimals).toString() +
                 '\n' +
                 'open'.tr +
                 ' : ' +
-                data!.open.toString() +
+                data!.open.toStringAsFixed(decimals).toString() +
                 '\n' +
                 'close'.tr +
                 ' : ' +
-                data!.close.toString()
-            : 'price'.tr + ' : ' + data!.yValue.toString()) +
+                data!.close.toStringAsFixed(decimals).toString()
+            : 'price'.tr + ' : ' + data!.yValue.toStringAsFixed(decimals).toString()) +
         '\n' +
         'volume'.tr +
         ' : ';

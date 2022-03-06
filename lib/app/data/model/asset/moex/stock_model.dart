@@ -25,6 +25,8 @@ class StockModelWithMarketData extends MoexModelWithMarketData {
   final num lastPrice;
   final num dayChangePercent;
   final num dayChangeNominal;
+
+  @override
   final int priceDecimals;
 
   final int lotSize;

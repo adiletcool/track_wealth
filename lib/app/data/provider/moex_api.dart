@@ -8,7 +8,7 @@ import '../model/asset/moex/bond_model.dart';
 import '../model/asset/moex/currency_model.dart';
 import '../model/asset/moex/moex_model.dart';
 import '../model/asset/moex/stock_model.dart';
-import '../model/asset_chart/asset_chart_interval.dart';
+import '../model/asset_chart/moex_chart_interval.dart';
 import '../model/asset_chart/ohlcv_model.dart';
 
 class MoexApiClient extends GetConnect {
@@ -49,63 +49,6 @@ class MoexApiClient extends GetConnect {
       return foundAssets;
     }
     return [];
-  }
-
-  Future<List<OhlcvModel>> getMoexAssetHistory({
-    required SearchMoexModel asset,
-    required AssetChartInterval interval,
-  }) async {
-    String url;
-    Map<String, dynamic> params;
-
-    switch (asset.assetType) {
-      case AssetType.stocks:
-        SearchStockModel stock = asset as SearchStockModel;
-        interval as MoexAssetChartInterval;
-
-        String sharesType = stock.stockPrimaryBoardId == StockPrimaryBoardId.tqbr ? 'shares' : 'foreignshares';
-        int boardGroups = stock.stockPrimaryBoardId == StockPrimaryBoardId.tqbr ? 57 : 265;
-
-        url = "$base/cs/engines/stock/markets/$sharesType/boardgroups/$boardGroups/securities/${stock.secId}.hs";
-        params = {"s1.type": "candles", "interval": interval.moexCandleTF.queryInterval.toString(), "candles": interval.nCandles.toString()};
-        break;
-
-      case AssetType.bonds:
-      case AssetType.currencies:
-        url = '';
-        params = {};
-        throw UnimplementedError(); // TODO: Handle getMoexAssetHistory for currencies and bonds
-
-      default:
-        throw 'Not a moex asset type: ${asset.assetType}';
-    }
-    var response = await get(url, query: params);
-
-    List? candles = response.body['candles'];
-    List volumes = response.body['volumes'];
-
-    if (candles == null || candles.isEmpty) {
-      showDefaultSnackbar(message: 'Unknown error while loading: $url\n$params', title: 'error'.tr);
-      return [];
-    }
-
-    // [[1645488000000, 79.99, 80.97, 78.49, 78.8], ...]
-    List<List<num>> ohlc = List.generate(candles.first['data'].length, (index) => List<num>.from(candles.first['data'][index]));
-    // [[1645488000000, 478201000000], ...]
-    List<List<num>> volume = List.generate(volumes.first['data'].length, (index) => List<num>.from(volumes.first['data'][index]));
-
-    List<OhlcvModel> result = List.generate(
-      ohlc.length,
-      (index) => OhlcvModel(
-        timestamp: ohlc[index][0].toInt(),
-        open: ohlc[index][1],
-        high: ohlc[index][2],
-        low: ohlc[index][3],
-        close: ohlc[index][4],
-        volume: volume[index][1],
-      ),
-    );
-    return result;
   }
 
   Future<MoexModelWithMarketData?> getMoexAssetWithMarketData(SearchMoexModel asset) async {
@@ -158,5 +101,67 @@ class MoexApiClient extends GetConnect {
       default:
         throw 'Not a moex asset type: ${asset.assetType}';
     }
+  }
+
+  Future<List<OhlcvModel>> getMoexAssetChart({required SearchMoexModel asset, required MoexChartInterval interval}) async {
+    String url;
+    Map<String, dynamic> params;
+
+    switch (asset.assetType) {
+      case AssetType.stocks:
+        SearchStockModel stock = asset as SearchStockModel;
+
+        String sharesType = stock.stockPrimaryBoardId == StockPrimaryBoardId.tqbr ? 'shares' : 'foreignshares';
+        int boardGroups = stock.stockPrimaryBoardId == StockPrimaryBoardId.tqbr ? 57 : 265;
+
+        url = "$base/cs/engines/stock/markets/$sharesType/boardgroups/$boardGroups/securities/${stock.secId}.hs";
+        params = {"s1.type": "candles", "interval": interval.moexCandleTF.queryInterval, "candles": interval.nCandles.toString()};
+        break;
+
+      case AssetType.bonds:
+      case AssetType.currencies:
+        url = '';
+        params = {};
+        throw UnimplementedError(); // TODO: Handle getMoexAssetHistory for currencies and bonds
+
+      default:
+        throw 'Not a moex asset type: ${asset.assetType}';
+    }
+    var response = await get(url, query: params);
+
+    if (response.statusCode != 200) {
+      showDefaultSnackbar(message: 'check_connection_try_again'.tr, title: 'no_internet_connection'.tr);
+      return [];
+    }
+
+    List? candles = response.body['candles'];
+    List volumes = response.body['volumes'];
+
+    if (candles == null || candles.isEmpty) {
+      showDefaultSnackbar(message: 'Unknown error while loading: $url\n$params', title: 'error'.tr);
+      return [];
+    }
+
+    // [[1645488000000, 79.99, 80.97, 78.49, 78.8], ...]
+    List<List<num>> ohlc = List.generate(candles.first['data'].length, (index) => List<num>.from(candles.first['data'][index]));
+    // [[1645488000000, 478201000000], ...]
+    List<List<num>> volume = List.generate(volumes.first['data'].length, (index) => List<num>.from(volumes.first['data'][index]));
+
+    Iterable<OhlcvModel> result = Iterable.generate(
+      ohlc.length,
+      (index) => OhlcvModel(
+        timestamp: ohlc[index][0].toInt(),
+        open: ohlc[index][1],
+        high: ohlc[index][2],
+        low: ohlc[index][3],
+        close: ohlc[index][4],
+        volume: volume[index][1],
+      ),
+    );
+
+    // hourly to 4-hourly
+    if (interval.title == '7d') return result.resample(combineBy: 4);
+
+    return result.toList();
   }
 }

@@ -25,4 +25,7 @@ class CurrencyModelWithMarketData extends MoexModelWithMarketData {
 
   @override
   String? get imageUrl => null;
+
+  @override
+  int get priceDecimals => throw UnimplementedError();
 }

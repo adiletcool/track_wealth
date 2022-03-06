@@ -50,7 +50,33 @@ class SearchCoinmarketcapModel implements AssetModel {
 }
 
 class CoinmarketcapModelWithMarketData extends SearchCoinmarketcapModel implements AssetModelWithMarketData {
-  CoinmarketcapModelWithMarketData.fromMap(Map<String, dynamic> map) : super.fromMap(map);
+  final num lastPrice;
+  final num dayChangePercent;
+  final num dayVolume;
+  final num? marketCapitalization;
+  final String mdDescription;
+
+  @override
+  int get priceDecimals {
+    if (lastPrice >= 10) return 2;
+    if (lastPrice >= 1) return 3;
+
+    String expA = lastPrice.toStringAsExponential(3);
+    int exp = int.parse(expA.split('e-').last);
+
+    if (exp > 10) return 10; // to small number, better just show 0.00...0
+    return 3 + exp;
+  }
+
+  String get lastPriceRepr => lastPrice.toStringAsFixed(priceDecimals);
+
+  CoinmarketcapModelWithMarketData.fromMap(Map<String, dynamic> map)
+      : lastPrice = map['statistics']['price'],
+        dayChangePercent = map['statistics']['priceChangePercentage24h'],
+        marketCapitalization = map['statistics']['marketCap'],
+        dayVolume = map['volume'],
+        mdDescription = map['description'],
+        super.fromMap(map);
 
   @override
   String get updateTime => DateFormat.yMMMd(Get.deviceLocale?.languageCode).add_Hms().format(DateTime.now());

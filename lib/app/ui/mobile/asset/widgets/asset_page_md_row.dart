@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '../../../../controllers/asset/asset_page_controller.dart';
 import '../../../../data/enums/market_types.dart';
+import '../../../../data/model/asset/coinmarketcap/coinmarketcap_model.dart';
 import '../../../../data/model/asset/moex/stock_model.dart';
 import '../../../../utils/formatters.dart';
 import '../../../theme/app_color.dart';
@@ -50,7 +51,11 @@ class AssetPageMarketDataRow extends GetView<AssetPageController> {
                     Icon(isFalling ? Icons.south_east_rounded : Icons.north_east_rounded, size: 15, color: subtitleColor),
                     const SizedBox(width: 10),
                     Text(
-                      changeSign + dayChangeNominal.abs().currencyFormat(locale: 'ru', symbol: '₽') + ' (' + dayChangeNominal.abs().percentFormat() + ')',
+                      changeSign +
+                          dayChangeNominal.abs().currencyFormat(locale: currencyLocale, symbol: currencySymbol, decimals: priceDecimals) +
+                          ' (' +
+                          (dayChangePercent.abs() / 100).percentFormat(decimals: 2) +
+                          ')',
                       style: TextStyle(color: subtitleColor, fontSize: 15),
                     ),
                   ],
@@ -77,6 +82,19 @@ class AssetPageMarketDataRow extends GetView<AssetPageController> {
           priceDecimals: mdStock.priceDecimals,
           dayVolume: mdStock.dayVolume,
           marketCapitalization: mdStock.marketCapitalization,
+        );
+      case AssetType.crypto:
+        CoinmarketcapModelWithMarketData mdCrypto = controller.mdAsset as CoinmarketcapModelWithMarketData;
+        return getCommonMdRow(
+          context,
+          lastPrice: mdCrypto.lastPrice,
+          dayChangeNominal: (mdCrypto.lastPrice * mdCrypto.dayChangePercent / 100) / (1 + mdCrypto.dayChangePercent / 100),
+          dayChangePercent: mdCrypto.dayChangePercent,
+          priceDecimals: mdCrypto.priceDecimals,
+          dayVolume: mdCrypto.dayVolume,
+          marketCapitalization: mdCrypto.marketCapitalization,
+          currencyLocale: 'en',
+          currencySymbol: '\$',
         );
 
       default:
