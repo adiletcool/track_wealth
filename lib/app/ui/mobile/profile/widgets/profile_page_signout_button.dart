@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import '../../../../controllers/auth/auth_controller.dart';
 import '../../../theme/app_color.dart';
 
-class SignOutButton extends GetView<AuthController> {
+class SignOutButton extends GetView<AuthPageController> {
   const SignOutButton({Key? key}) : super(key: key);
 
   @override

@@ -2,6 +2,7 @@ final Map<String, String> en = {
   'error': 'Error',
   'no_internet_connection': 'No internet connection.',
   'check_connection_try_again': 'Please check your internet connection and try again.',
+
   // Auth
   'login': 'Login',
   'register': 'Sign up',
@@ -27,7 +28,7 @@ final Map<String, String> en = {
   'invalid-password': 'Incorrect login or password.',
   'wrong-password': 'Incorrect login or password.',
 
-  // Market Page
+  // Asset search page
   'search': 'Search',
   'stocks': 'Stocks',
   'crypto': 'Crypto',
@@ -67,4 +68,42 @@ final Map<String, String> en = {
   '5Y': '5Y',
   'add_operation': 'Add operation',
   'upd.': 'Upd.',
+
+  // operation page
+  'add': 'Add',
+  'quantity': 'Quantity',
+  'amount': 'Amount',
+  'unit': 'unit',
+  'lot': 'lot',
+  'total': 'Total',
+  'fee': 'Fee',
+  'note': 'Note',
+  'date': 'Date',
+
+  //operation type
+  'trade': 'Trade',
+  'money': 'Money',
+  // money action
+  'deposit': 'deposit',
+  'withdrawal': 'Withdrawal',
+  'revenue': 'Revenue',
+  'expense': 'Expense',
+  'dividends': 'Dividends',
+
+// trade action
+  'buy': 'Buy',
+  'sell': 'Sell',
+
+  'enter_the_quantity': 'Enter the quantity',
+  'enter_the_price': 'Enter the price',
+  'enter_the_fee': 'Enter the fee',
+  'enter_positive_number': 'Enter a positive number',
+
+  'purchase': 'Purchase',
+  'sale': 'Sale',
+  'for': 'for',
+  'receive_dividends': 'Receive dividends',
+
+  'receive': 'Receive',
+  'write_off': 'Write-off',
 };

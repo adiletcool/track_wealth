@@ -39,7 +39,7 @@ class AssetPageStatistics extends GetView<AssetPageController> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('upd.'.tr + ': ' + controller.mdAsset!.updateTime, style: Get.textTheme.labelMedium),
+          Text('upd.'.tr + ': ' + controller.mdAsset!.updateTime, style: context.textTheme.labelMedium),
           const SizedBox(height: 10),
           getBody(),
         ],

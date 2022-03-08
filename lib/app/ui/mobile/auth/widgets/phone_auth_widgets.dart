@@ -9,7 +9,7 @@ import '../../widgets/decorations.dart';
 import '../../widgets/expanded_section.dart';
 import 'auth_method_switcher.dart';
 
-class PhoneAuthBody extends GetView<AuthController> {
+class PhoneAuthBody extends GetView<AuthPageController> {
   const PhoneAuthBody({
     Key? key,
     required this.keyboardVisible,
@@ -54,7 +54,7 @@ class PhoneAuthBody extends GetView<AuthController> {
   }
 }
 
-class PhoneAuthTextField extends GetView<AuthController> {
+class PhoneAuthTextField extends GetView<AuthPageController> {
   const PhoneAuthTextField({Key? key}) : super(key: key);
 
   @override
@@ -84,7 +84,7 @@ class PhoneAuthTextField extends GetView<AuthController> {
   }
 }
 
-class PhoneCodeTextField extends GetView<AuthController> {
+class PhoneCodeTextField extends GetView<AuthPageController> {
   const PhoneCodeTextField({Key? key}) : super(key: key);
 
   @override
@@ -112,7 +112,7 @@ class PhoneCodeTextField extends GetView<AuthController> {
 
 class ChangePhoneSendAgainButtons extends StatelessWidget {
   ChangePhoneSendAgainButtons({Key? key}) : super(key: key);
-  final AuthController authController = Get.find<AuthController>();
+  final AuthPageController authController = Get.find<AuthPageController>();
 
   @override
   Widget build(BuildContext context) {
@@ -137,7 +137,7 @@ class ChangePhoneSendAgainButtons extends StatelessWidget {
   }
 }
 
-class SendOrConfirmCodeButton extends GetView<AuthController> {
+class SendOrConfirmCodeButton extends GetView<AuthPageController> {
   const SendOrConfirmCodeButton({Key? key}) : super(key: key);
 
   Color getButtonColor(phoneNumberValid, isPhoneCodeSent, phoneCodeValid) {

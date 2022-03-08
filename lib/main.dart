@@ -20,7 +20,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   ).then(
-    (value) => Get.put(AuthController()),
+    (value) => Get.put(AuthPageController()),
   );
 
   await SystemChrome.setPreferredOrientations(

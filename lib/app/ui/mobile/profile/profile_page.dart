@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:track_wealth/app/ui/mobile/widgets/sliver_fill_column.dart';
 
 import '../../../controllers/profile/profile_controller.dart';
 import 'widgets/profile_page_appbar.dart';
 import 'widgets/profile_page_signout_button.dart';
 
-class ProfilePage extends GetView<ProfileController> {
+class ProfilePage extends GetView<ProfilePageController> {
   const ProfilePage({Key? key}) : super(key: key);
 
   @override
@@ -24,15 +25,12 @@ class ProfilePageBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverFillRemaining(
-      hasScrollBody: false,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(),
-          const SignOutButton(),
-        ],
-      ),
+    return SliverFillColumn(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(),
+        const SignOutButton(),
+      ],
     );
   }
 }

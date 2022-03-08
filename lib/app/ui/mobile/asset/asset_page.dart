@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '../../../controllers/asset/asset_page_controller.dart';
 import '../widgets/loading_widget.dart';
+import '../widgets/sliver_fill_column.dart';
 import 'widgets/asset_page_appbar.dart';
 import 'widgets/asset_page_chart.dart';
 import 'widgets/asset_page_interval_row.dart';
@@ -39,27 +40,21 @@ class AssetPageBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverFillRemaining(
-      hasScrollBody: false,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                AssetPageMarketDataRow(),
-                AssetPageIntervalSwitcher(),
-                SizedBox(height: 10),
-                AssetPageChart(),
-                AssetPageStatistics(),
-              ],
-            ),
-            const AssetPageOperationButton(),
+    return SliverFillColumn(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: const [
+            AssetPageMarketDataRow(),
+            AssetPageIntervalSwitcher(),
+            SizedBox(height: 10),
+            AssetPageChart(),
+            AssetPageStatistics(),
           ],
         ),
-      ),
+        const AssetPageOperationButton(),
+      ],
     );
   }
 }

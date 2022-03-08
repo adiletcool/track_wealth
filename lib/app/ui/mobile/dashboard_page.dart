@@ -3,10 +3,10 @@ import 'package:get/get.dart';
 
 import '../../controllers/dashboard/dashboard_controller.dart';
 import 'home/home_page.dart';
-import 'operations/operations_page.dart';
+import 'history/history_page.dart';
 import 'profile/profile_page.dart';
 
-class DashboardPage extends GetView<DashboardController> {
+class DashboardPage extends GetView<DashboardPageController> {
   DashboardPage({Key? key}) : super(key: key);
 
   final ScrollController scrollController = ScrollController();
@@ -19,7 +19,7 @@ class DashboardPage extends GetView<DashboardController> {
               index: controller.tabIndex.value,
               children: const [
                 HomePage(),
-                OperationsPage(),
+                HistoryPage(),
                 ProfilePage(),
               ],
             ),

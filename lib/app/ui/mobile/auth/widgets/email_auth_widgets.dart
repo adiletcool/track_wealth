@@ -6,7 +6,7 @@ import '../../../theme/app_color.dart';
 import '../../widgets/expanded_section.dart';
 import 'auth_method_switcher.dart';
 
-class EmailAuthBody extends GetView<AuthController> {
+class EmailAuthBody extends GetView<AuthPageController> {
   const EmailAuthBody({
     Key? key,
     required this.keyboardVisible,
@@ -47,7 +47,7 @@ class EmailAuthBody extends GetView<AuthController> {
 
 class ForgotPasswordButton extends StatelessWidget {
   ForgotPasswordButton({Key? key}) : super(key: key);
-  final AuthController authController = Get.find<AuthController>();
+  final AuthPageController authController = Get.find<AuthPageController>();
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +66,7 @@ class ForgotPasswordButton extends StatelessWidget {
 }
 
 class AuthMethodTitle extends StatelessWidget {
-  final AuthController authController = Get.find<AuthController>();
+  final AuthPageController authController = Get.find<AuthPageController>();
 
   AuthMethodTitle({Key? key}) : super(key: key);
 
@@ -98,7 +98,7 @@ class AuthMethodTitle extends StatelessWidget {
   }
 }
 
-class EmailAuthInputFields extends GetView<AuthController> {
+class EmailAuthInputFields extends GetView<AuthPageController> {
   const EmailAuthInputFields({Key? key}) : super(key: key);
 
   @override
@@ -132,7 +132,7 @@ class EmailAuthInputFields extends GetView<AuthController> {
   }
 }
 
-class EmailAuthButton extends GetView<AuthController> {
+class EmailAuthButton extends GetView<AuthPageController> {
   const EmailAuthButton({Key? key}) : super(key: key);
 
   @override
@@ -162,7 +162,7 @@ class EmailAuthButton extends GetView<AuthController> {
   }
 }
 
-class EmailAuthTextField extends GetView<AuthController> {
+class EmailAuthTextField extends GetView<AuthPageController> {
   final TextEditingController textController;
   final String labelText;
   final bool isPassword;

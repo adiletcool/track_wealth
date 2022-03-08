@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:track_wealth/app/routes/app_pages.dart';
 
 import 'home_page_search.dart';
 
@@ -14,7 +16,11 @@ class HomePageAppBar extends StatelessWidget {
       backgroundColor: context.theme.scaffoldBackgroundColor,
       actions: [
         IconButton(
-          icon: Icon(Icons.search_rounded, color: context.theme.iconTheme.color),
+          icon: SvgPicture.asset('assets/icons/wallet2.svg', color: context.theme.iconTheme.color, width: 22),
+          onPressed: () => Get.toNamed(Routes.moneyOperation),
+        ),
+        IconButton(
+          icon: SvgPicture.asset('assets/icons/search.svg', color: context.theme.iconTheme.color),
           onPressed: () {
             showSearch(
               context: context,

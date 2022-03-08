@@ -47,6 +47,7 @@ final Map<String, String> ru = {
 
   // Moex asset page
   'Period must be positive': 'Период должен быть положительным.',
+
   // Profile page
   'profile': 'Профиль',
 
@@ -67,4 +68,42 @@ final Map<String, String> ru = {
   '5Y': '5Л',
   'add_operation': 'Добавить сделку',
   'upd.': 'Обн.',
+
+  // operation page
+  'add': 'Добавить',
+  'quantity': 'Количество',
+  'amount': 'Сумма',
+  'unit': 'шт',
+  'lot': 'лот',
+  'total': 'Итого',
+  'fee': 'Комиссия',
+  'note': 'Заметка',
+  'date': 'Дата',
+
+  //operation type
+  'trade': 'Сделка',
+  'money': 'Деньги',
+  // money action
+  'deposit': 'Депозит',
+  'withdrawal': 'Вывод',
+  'revenue': 'Доход',
+  'expense': 'Расход',
+  'dividends': 'Дивиденды',
+
+  // trade action
+  'buy': 'Купить',
+  'sell': 'Продать',
+
+  'enter_the_quantity': 'Введите количество',
+  'enter_the_price': 'Введите цену',
+  'enter_the_fee': 'Введите комиссию',
+  'enter_positive_number': 'Введите положительное число',
+
+  'purchase': 'Покупка',
+  'sale': 'Продажа',
+  'for': 'по',
+  'receive_dividends': 'Зачислить дивиденды',
+
+  'receive': 'Зачисление',
+  'write_off': 'Списание',
 };

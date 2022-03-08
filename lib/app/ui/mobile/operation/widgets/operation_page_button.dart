@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:track_wealth/app/controllers/asset/asset_page_controller.dart';
-import 'package:track_wealth/app/routes/app_pages.dart';
 
+import '../../../../controllers/operation/operation_controller.dart';
 import '../../../theme/app_color.dart';
 
-class AssetPageOperationButton extends GetView<AssetPageController> {
-  const AssetPageOperationButton({Key? key}) : super(key: key);
+class OperationPageAddButton<T extends OperationController> extends GetView<T> {
+  const OperationPageAddButton({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 20),
+      padding: const EdgeInsets.only(bottom: 0),
       child: InkWell(
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
-        onTap: () => Get.toNamed(Routes.tradeOperation, arguments: controller.mdAsset),
+        onTap: controller.addOperation,
         child: Container(
           height: 55,
           width: context.width - 80,
@@ -26,7 +25,7 @@ class AssetPageOperationButton extends GetView<AssetPageController> {
           ),
           child: Center(
             child: Text(
-              'add_operation'.tr,
+              'add'.tr,
               style: TextStyle(fontSize: 19, color: ThemeBasedColor(context, Colors.white, Colors.black)),
             ),
           ),

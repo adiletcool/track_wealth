@@ -33,17 +33,11 @@ class AssetPageAppBar extends GetView<AssetPageController> {
       centerTitle: false,
       backgroundColor: context.theme.scaffoldBackgroundColor,
       actions: [
-        Container(
-          padding: const EdgeInsets.only(left: 10),
-          decoration: BoxDecoration(
-            borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(30), topLeft: Radius.circular(30)),
-            color: Colors.indigo.withOpacity(.3),
-          ),
-          child: IconButton(
-            icon: Icon(Icons.star_border_rounded, color: buttonColor, size: 28),
-            onPressed: () {}, // TODO: make asset starred
-          ),
-        )
+        IconButton(
+          icon: Icon(Icons.bookmark_border_rounded, color: buttonColor, size: 28),
+          // icon: Icon(Icons.star_border_rounded, color: buttonColor, size: 28),
+          onPressed: () {}, // TODO: make asset starred
+        ),
       ],
     );
   }

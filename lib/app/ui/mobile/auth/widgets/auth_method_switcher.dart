@@ -9,7 +9,7 @@ class AuthMethodSwitcher extends StatelessWidget {
   final Color? backgroundColor;
   AuthMethodSwitcher({Key? key, this.height = 50, this.style, this.backgroundColor}) : super(key: key);
 
-  final AuthController authController = Get.find<AuthController>();
+  final AuthPageController authController = Get.find<AuthPageController>();
 
   @override
   Widget build(BuildContext context) {

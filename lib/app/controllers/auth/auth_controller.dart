@@ -18,7 +18,7 @@ class AuthMethodConfig {
   AuthMethodConfig(this.method, this.backgroundColor, this.onTap);
 }
 
-class AuthController extends GetxController {
+class AuthPageController extends GetxController {
   late Rx<User?> _user;
 
   @override

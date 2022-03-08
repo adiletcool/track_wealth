@@ -8,7 +8,7 @@ import 'widgets/auth_method_card.dart';
 import 'widgets/email_auth_widgets.dart';
 import 'widgets/phone_auth_widgets.dart';
 
-class AuthPage extends GetView<AuthController> {
+class AuthPage extends GetView<AuthPageController> {
   AuthPage({Key? key}) : super(key: key);
 
   final ScrollController scrollController = ScrollController();

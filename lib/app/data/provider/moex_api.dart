@@ -162,6 +162,9 @@ class MoexApiClient extends GetConnect {
     // hourly to 4-hourly
     if (interval.title == '7d') return result.resample(combineBy: 4);
 
+    // daily to 2-daily
+    if (interval.title == '90d') return result.resample(combineBy: 2);
+
     return result.toList();
   }
 }

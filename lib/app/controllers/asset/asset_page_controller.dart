@@ -29,7 +29,6 @@ class AssetPageController extends GetxController {
 
   Future<void> loadMdAsset() async {
     /// loads asset with market data: last price, day change, etc.
-    print('Loading initial asset market data');
     switch (asset.assetType) {
       case AssetType.stocks:
         mdAsset = await assetRepository.getMoexAssetWithMarketData(asset as SearchMoexModel);
@@ -42,8 +41,6 @@ class AssetPageController extends GetxController {
         mdAsset = await assetRepository.getCoinmarketcapAssetWithMarketData(asset as SearchCoinmarketcapModel);
         break;
     }
-
-    print('Asset market data loaded');
   }
 
   @override
@@ -109,7 +106,6 @@ class ChartController {
 
   Future<void> loadData() async {
     /// Loads ohlcv series for chart
-    print('Loading initial asset history');
 
     switch (asset.assetType) {
       case AssetType.stocks:
@@ -130,8 +126,6 @@ class ChartController {
       case AssetType.currencies:
         throw UnimplementedError();
     }
-
-    print('Asset history loaded');
   }
 
   void initInterval() {

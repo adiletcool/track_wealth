@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:track_wealth/app/ui/mobile/widgets/sliver_fill_column.dart';
 
 import '../../../controllers/home/home_controller.dart';
 import 'widgets/home_page_appbar.dart';
 
-class HomePage extends GetView<HomeController> {
+class HomePage extends GetView<HomePageController> {
   const HomePage({Key? key}) : super(key: key);
 
   @override
@@ -23,14 +24,10 @@ class HomePageBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SliverFillRemaining(
-      hasScrollBody: false,
-      child: Padding(
-        padding: EdgeInsets.all(8.0),
-        child: Center(
-          child: Text('Home'),
-        ),
-      ),
+    return const SliverFillColumn(
+      children: [
+        Text('Home'),
+      ],
     );
   }
 }
